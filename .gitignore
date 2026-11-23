@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+
+# IDE
+.idea/
+.vscode/
+
+# Секреты и локальные файлы
+.env
+*.sqlite3
+db.sqlite3
+
+# OS
+.DS_Store
+Thumbs.db

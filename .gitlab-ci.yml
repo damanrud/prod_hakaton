@@ -1,0 +1,130 @@
+stages: [test, deploy]
+variables:
+  DEPLOY_USER: ubuntu
+  DEPLOY_HOST: hack-ovb-08-vm1-86a371.vm.prodcontest.com
+
+.on_change:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: never
+    - when: on_success
+
+test:structure:
+  extends: .on_change
+  stage: test
+  image: python:3.12-slim
+  script:
+    - python scripts/verify_project.py
+
+test:backend:
+  extends: .on_change
+  stage: test
+  image: python:3.12-slim
+  script:
+    - pip install --no-cache-dir -r backend/requirements.txt coverage==7.10.7
+    - coverage run --branch --include='backend/*.py' --omit='backend/tests.py' -m unittest discover -s backend -p tests.py
+  after_script:
+    - coverage report
+    - coverage xml -o backend/coverage.xml
+    - coverage lcov -o backend/lcov.info
+  coverage: '/^TOTAL\s+.*\s+(\d+(?:\.\d+)?%)$/'
+  artifacts:
+    when: always
+    paths: [backend/coverage.xml, backend/lcov.info]
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: backend/coverage.xml
+
+test:frontend:
+  extends: .on_change
+  stage: test
+  image: node:22-alpine
+  script:
+    - cd frontend
+    - npm ci --no-audit --no-fund
+    - npm run build
+  artifacts:
+    paths: [frontend/dist/]
+    expire_in: 1 day
+
+test:browser:
+  extends: .on_change
+  stage: test
+  needs: ["test:frontend"]
+  image: dockerhub.timeweb.cloud/library/python:3.12-slim-bookworm
+  script:
+    - pip install -r backend/requirements.txt playwright==1.56.0
+    - python -m playwright install --with-deps --only-shell chromium
+    - |
+      python backend/app.py > /tmp/autochoice.log 2>&1 &
+      server=$!
+      trap 'kill "$server" 2>/dev/null || true' EXIT
+      python - <<'PYREADY'
+      import time
+      from urllib.request import urlopen
+      for attempt in range(50):
+          try:
+              with urlopen("http://127.0.0.1:8000/health", timeout=1):
+                  break
+          except OSError:
+              time.sleep(.2)
+      else:
+          raise SystemExit("API недоступен")
+      PYREADY
+      python scripts/browser_check.py
+
+test:compose:
+  extends: .on_change
+  stage: test
+  image:
+    name: docker:27-cli
+    entrypoint: [""]
+  script:
+    - docker compose -f docker-compose.yml config -q
+    - IMAGE_PREFIX=registry.example.test/autochoice IMAGE_TAG=test docker compose -f deploy/docker-compose.prod.yml config -q
+
+monitor:production:
+  stage: test
+  image: python:3.12-slim
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  script:
+    - python scripts/smoke_http.py "https://$DEPLOY_HOST"
+    - |
+      python - <<'PYCHECK'
+      import json, os
+      from urllib.request import urlopen
+      with urlopen("https://" + os.environ["DEPLOY_HOST"] + "/api/metrics", timeout=10) as response:
+          if json.load(response)["recent_server_error"]:
+              raise SystemExit("В production за последние 10 минут были ответы 5xx")
+      PYCHECK
+
+deploy:vm:
+  stage: deploy
+  image: registry.spirit.t-education.com/cicd-images/base-noble:release-1.1.0
+  resource_group: production
+  environment: production
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - |
+      set -eu
+      command -v scp >/dev/null || (apt-get update -qq && apt-get install -y -qq openssh-client)
+      key=${DEPLOY_SSH_KEY:-${DEPLOY_KEY:-}}
+      test -f "$key" || { echo "Нужна переменная DEPLOY_KEY типа File"; exit 1; }
+      chmod 600 "$key"
+      mkdir -p ~/.ssh
+      check=accept-new
+      if [ -n "${DEPLOY_KNOWN_HOSTS:-}" ]; then
+        cp "$DEPLOY_KNOWN_HOSTS" ~/.ssh/known_hosts
+        check=yes
+      fi
+      remote="$DEPLOY_USER@$DEPLOY_HOST"
+      port=${DEPLOY_PORT:-22}
+      dir="autochoice5/releases/$CI_COMMIT_SHA"
+      tar --exclude=autochoice.db --exclude=node_modules --exclude=dist --exclude=logs --exclude=__pycache__ -czf /tmp/autochoice.tgz backend frontend nginx deploy
+      ssh -i "$key" -p "$port" -o BatchMode=yes -o StrictHostKeyChecking="$check" "$remote" "mkdir -p '$dir'"
+      scp -i "$key" -P "$port" -o StrictHostKeyChecking="$check" /tmp/autochoice.tgz "$remote:$dir/source.tgz"
+      ssh -i "$key" -p "$port" -o BatchMode=yes -o StrictHostKeyChecking="$check" "$remote" "cd '$dir' && tar -xzf source.tgz && sh deploy/release_on_vm.sh '$CI_COMMIT_SHA'"
+
