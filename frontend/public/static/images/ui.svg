@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <symbol id="arrow-right" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+  <symbol id="arrow-left" viewBox="0 0 24 24"><path d="M20 12H5m6-6-6 6 6 6"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  <symbol id="close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="car" viewBox="0 0 24 24"><path d="m5 11 1.5-4.5a2 2 0 0 1 2-1.5h7a2 2 0 0 1 2 1.5L19 11M5 18v1m14-1v1M3 16v-2a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/><path d="M7 14.5h1m8 0h1"/></symbol>
+  <symbol id="road" viewBox="0 0 24 24"><path d="M8 3 3 21m13-18 5 18m-9-18v3m0 4v4m0 4v3"/></symbol>
+  <symbol id="heart" viewBox="0 0 24 24"><path d="M20.4 5.8a4.9 4.9 0 0 0-7 0L12 7.2l-1.4-1.4a4.9 4.9 0 0 0-7 7l1.4 1.4 7 6.8 7-6.8 1.4-1.4a4.9 4.9 0 0 0 0-7Z"/></symbol>
+  <symbol id="gauge" viewBox="0 0 24 24"><path d="M4.3 18a9 9 0 1 1 15.4 0H4.3ZM8 9l1.4 1.4M16 9l-3 4a1.5 1.5 0 1 1-1-1"/></symbol>
+  <symbol id="layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5m-18 4 9 5 9-5"/></symbol>
+  <symbol id="refresh" viewBox="0 0 24 24"><path d="M20 4v5h-5M4 20v-5h5m-5.6-3.5a8.6 8.6 0 0 1 14.9-5.4L20 9m-16 6 1.7 2.9a8.6 8.6 0 0 0 14.9-5.4"/></symbol>
+  <symbol id="edit" viewBox="0 0 24 24"><path d="m13.5 6.5 4 4M4 20l4-.8L20 7a1.4 1.4 0 0 0 0-2l-1-1a1.4 1.4 0 0 0-2 0L5 16l-1 4Z"/></symbol>
+  <symbol id="image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 16-5-5L6 21"/></symbol>
+  <symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></symbol>
+</svg>

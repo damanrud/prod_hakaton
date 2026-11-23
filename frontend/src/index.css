@@ -1,0 +1,1033 @@
+/* 1. Основные стили */
+:root {
+    color-scheme: light;
+    --bg: #f7f9fc;
+    --white: #fff;
+    --ink: #172338;
+    --muted: #64748b;
+    --blue: #2563eb;
+    --blue-dark: #1944c6;
+    --blue-light: #e9f0ff;
+    --line: #e2e8f0;
+    --soft-shadow: 0 14px 46px rgba(25, 58, 116, .08);
+    --header-height: 79px;
+    font: 16px/1.5 'Segoe UI', Arial, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); }
+[hidden] { display: none !important; }
+img { display: block; max-width: 100%; }
+svg { display: inline-block; width: 1.35em; height: 1.35em; flex: none; vertical-align: middle; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+a { color: inherit; }
+button, input { font: inherit; }
+button { color: inherit; cursor: pointer; }
+button:disabled { cursor: default; opacity: .55; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+h2 { font-size: clamp(2rem, 3.8vw, 3.25rem); line-height: 1.08; letter-spacing: -.045em; font-weight: 760; }
+.shell { width: min(100% - 72px, 1248px); margin-inline: auto; }
+.visually-hidden, .skip-link:not(:focus) { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip-link:focus { position: fixed; z-index: 10; top: 12px; left: 12px; background: var(--white); color: var(--blue-dark); border-radius: 8px; padding: 12px 16px; }
+.notice { padding: 1rem 1.25rem; border: 1px solid var(--line); border-radius: 16px; background: var(--white); }
+
+.button {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    padding: 10px 17px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    line-height: 1.3;
+    transition: background .18s ease, color .18s ease, box-shadow .18s ease, transform .18s ease, border-color .18s ease;
+}
+.button-primary { min-height: 56px; color: var(--white); background: var(--blue); box-shadow: 0 6px 15px rgba(36, 87, 233, .22); padding-inline: 22px; }
+.button-primary:hover:not(:disabled) { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 9px 19px rgba(36, 87, 233, .30); }
+.button-outline, .button-secondary { color: var(--blue-dark); background: var(--white); border-color: #cbdaf7; }
+.button-outline:hover, .button-secondary:hover { background: var(--blue-light); border-color: #aac0f4; }
+.button-quiet { color: var(--blue-dark); background: transparent; }
+.button-quiet:hover { background: var(--blue-light); }
+.button-white { background: var(--white); color: var(--blue-dark); padding-inline: 22px; }
+.button-white:hover { background: #e9f0ff; transform: translateY(-2px); }
+.icon-button { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 13px; background: var(--blue-light); color: var(--blue-dark); flex: none; }
+.icon-button:hover { background: #dbe8ff; }
+
+/* 2. Главная страница */
+.site-header { background: rgba(255, 255, 255, .85); border-bottom: 1px solid var(--line); }
+.header-inner { min-height: calc(var(--header-height) - 1px); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; }
+.brand { display: inline-flex; align-items: center; width: fit-content; gap: 10px; font-size: 1.55rem; line-height: 1; font-weight: 800; letter-spacing: -.055em; text-decoration: none; }
+.brand span span { color: var(--blue); }
+.home-nav { display: flex; align-items: center; gap: 30px; font-size: .94rem; font-weight: 640; color: var(--muted); }
+.home-nav a { text-decoration: none; }
+.home-nav a:hover { color: var(--blue-dark); }
+.header-cta { justify-self: end; font-size: .9rem; }
+body:not([data-screen="home"]) .home-nav, body:not([data-screen="home"]) .header-cta { display: none; }
+
+/* 2.1 Первый экран */
+.hero {
+    min-height: calc(100dvh - var(--header-height));
+    padding-block: 60px 66px;
+    display: grid;
+    grid-template-columns: minmax(0, .94fr) minmax(0, 1.06fr);
+    gap: 41px;
+    align-items: center;
+}
+.hero-copy { animation: enter .55s ease both; }
+.hero h1 { font-size: clamp(2.7rem, 4.28vw, 4rem); line-height: 1.025; letter-spacing: -.063em; font-weight: 780; text-wrap: initial; }
+.hero h1 span { display: block; color: var(--blue); }
+.hero p { color: var(--muted); font-size: clamp(1.03rem, 1.6vw, 1.28rem); line-height: 1.55; max-width: 450px; margin-top: 24px; }
+.hero-actions { margin-top: 31px; display: flex; align-items: center; flex-wrap: wrap; gap: 20px; }
+.hero-time { white-space: nowrap; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+.hero-time svg { color: var(--blue); }
+.hero-media { isolation: isolate; overflow: hidden; position: relative; border: 1px solid #b8cdeb; border-radius: 30px; background: #ceddf1; box-shadow: var(--soft-shadow); animation: enter .65s .1s ease both; }
+.hero-media img { transition: transform .3s ease; width: 100%; aspect-ratio: 4 / 3; height: auto; object-fit: cover; }
+
+.scenarios {
+    padding-block: clamp(40px, 5vw, 76px);
+    background: #edf3fe;
+    border-block: 1px solid var(--line);
+}
+.scenarios h2 { text-align: center; }
+.scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: clamp(14px, 2vw, 26px);
+    margin-top: clamp(24px, 3vw, 40px);
+}
+.scenario-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    background: var(--white);
+    border: 1px solid #d3e1f8;
+    border-radius: 22px;
+    box-shadow: 0 8px 26px rgba(25, 58, 116, .07);
+}
+.scenario-card h3 {
+    display: grid;
+    place-items: center;
+    margin: 0;
+    padding: 13px 12px;
+    min-height: 68px;
+    background: #eef4ff;
+    color: var(--ink);
+    text-align: center;
+    font-size: clamp(1.1rem, 1.7vw, 1.38rem);
+    line-height: 1.17;
+    letter-spacing: -.025em;
+}
+.scenario-photo { display: grid; place-items: center; aspect-ratio: 1.65; background: var(--blue-light); color: var(--blue); }
+.scenario-photo img { width: 100%; height: 100%; min-height: 0; object-fit: cover; }
+.scenario-photo > svg { width: 48px; height: 48px; }
+.scenario-copy { padding: 20px 22px; }
+.scenario-copy h4 { margin: 0 0 8px; font-size: clamp(1.2rem, 1.8vw, 1.55rem); letter-spacing: -.035em; line-height: 1.15; }
+.scenario-copy p { color: var(--muted); line-height: 1.5; }
+.scenario-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: auto 22px 0;
+    padding: 14px 0 18px;
+    border-top: 1px solid var(--line);
+}
+.scenario-facts dt { color: var(--muted); font-size: .81rem; }
+.scenario-facts dd { margin: 2px 0 0; color: var(--blue-dark); font-size: 1.3rem; font-weight: 740; line-height: 1.2; }
+.scenario-facts small { font-size: .78rem; }
+.hero-media:hover img { transform: scale(1.025); }
+.scenario-card { transition: transform .18s ease, box-shadow .18s ease; }
+.scenario-card:hover { transform: translateY(-3px); box-shadow: var(--soft-shadow); }
+.scenario-detail.car-link { align-self: flex-start; margin: 0 22px 20px; }
+
+/* 2.2 Преимущества и шаги */
+.benefits { background: #ecf2fd; padding-block: 56px 64px; border-block: 1px solid #e4ecfa; }
+.benefits h2, .how h2 { text-align: center; }
+.benefit-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 30px; }
+.benefit-card { min-width: 0; padding: 24px; border: 1px solid #e1eafb; border-radius: 20px; background: var(--white); animation: enter .55s ease both; transition: transform .22s ease, box-shadow .22s ease; }
+.benefit-card:nth-child(2) { animation-delay: .08s; }
+.benefit-card:nth-child(3) { animation-delay: .16s; }
+.benefit-card:hover { transform: translateY(-4px); box-shadow: var(--soft-shadow); }
+.tile-icon { width: 49px; height: 49px; border-radius: 14px; display: grid; place-items: center; color: var(--blue); background: var(--blue-light); font-size: 1.2rem; }
+.benefit-card h3, .steps h3 { font-size: 1.16rem; line-height: 1.3; letter-spacing: -.018em; text-wrap: initial; }
+.benefit-card h3 { margin-top: 16px; }
+.benefit-card p, .steps p { color: var(--muted); margin-top: 7px; }
+.how { padding-block: 67px 60px; }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); list-style: none; margin: 32px 0 0; padding: 0; gap: 18px; }
+.steps li { display: flex; gap: 14px; align-items: flex-start; padding: 19px 12px 0 0; border-top: 1px solid #cddcf4; }
+.step-number { background: var(--blue-light); color: var(--blue-dark); font-weight: 800; min-width: 38px; height: 38px; display: grid; place-items: center; border-radius: 12px; }
+.bottom-section { padding-bottom: 64px; }
+.bottom-cta { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 22px; padding: 39px 44px; border-radius: 26px; color: var(--white); background: radial-gradient(ellipse at 100% 0, #2457e9 0%, transparent 65%), #142f70; }
+.bottom-cta h2 { font-size: clamp(1.75rem, 3.1vw, 2.75rem); text-wrap: initial; }
+.site-footer { border-top: 1px solid var(--line); background: var(--white); }
+.footer-inner { min-height: 80px; display: flex; justify-content: space-between; align-items: center; gap: 20px; color: var(--muted); font-size: .9rem; }
+.footer-inner .brand { color: var(--ink); font-size: 1.28rem; }
+
+/* 3. Опрос */
+.quiz-screen { max-width: 960px; min-height: calc(100svh - 79px); padding-block: 35px 50px; }
+.quiz-panel { background: var(--white); border: 1px solid var(--line); border-radius: 28px; box-shadow: var(--soft-shadow); padding: 24px clamp(22px, 4vw, 48px) 28px; animation: enter .35s ease both; }
+.quiz-navigation { display: flex; justify-content: space-between; gap: 12px; margin: 0 -7px 13px; }
+.quiz-navigation .button { padding-inline: 10px; min-height: 44px; }
+.quiz-progress-meta { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--muted); font-size: .9rem; font-weight: 700; margin-bottom: 8px; }
+#quiz-phase { color: var(--blue-dark); }
+#quiz-progress { display: block; width: 100%; height: 8px; border: 0; border-radius: 999px; background: #e8effc; color: var(--blue); accent-color: var(--blue); appearance: none; }
+#quiz-progress::-webkit-progress-bar { background: #e8effc; border-radius: 999px; }
+#quiz-progress::-webkit-progress-value { background: linear-gradient(90deg, #4682ff, var(--blue)); border-radius: 999px; transition: width .25s ease; }
+#quiz-progress::-moz-progress-bar { background: linear-gradient(90deg, #4682ff, var(--blue)); border-radius: 999px; }
+.question { margin-top: 28px; }
+.question h2 { max-width: 760px; font-size: clamp(1.68rem, 4vw, 2.7rem); text-wrap: pretty; }
+.quiz-hint { margin-top: 7px; color: var(--muted); }
+.quiz-options { margin-top: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.option-card { position: relative; display: flex; text-align: left; align-items: center; min-width: 0; width: 100%; gap: 14px; min-height: 108px; padding: 10px 32px 10px 10px; background: var(--white); border: 1px solid #d7e3f7; border-radius: 17px; transition: background .15s ease, border-color .15s ease, box-shadow .15s ease, transform .15s ease; }
+.option-card:hover:not(:disabled), .duel-choice:hover { transform: translateY(-2px); border-color: #93b0fc; box-shadow: 0 5px 13px #10234410; }
+.option-card.is-selected, .duel-choice.is-selected { background: #edf3ff; border-color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
+.option-card.is-limit { opacity: .64; }
+/* Фотографии вариантов ответа */
+.option-art { display: block; width: clamp(105px, 13vw, 156px); height: auto; flex: 0 0 auto; aspect-ratio: 1.66; object-fit: cover; border-radius: 10px; background: #edf3fb; }
+.option-copy { min-width: 0; display: grid; gap: 3px; }
+.option-name { font-size: 1rem; font-weight: 720; line-height: 1.25; }
+.option-description { color: var(--muted); font-size: .86rem; line-height: 1.35; }
+.option-check { display: grid; place-items: center; position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; border-radius: 50%; color: transparent; background: var(--white); border: 1px solid #cad9f2; }
+.option-check svg { width: 14px; height: 14px; stroke-width: 2.5; }
+.is-selected .option-check { color: var(--white); background: var(--blue); border-color: var(--blue); animation: select .23s ease both; }
+.quiz-options.is-duel .option-card { display: flex; flex-direction: column; align-items: stretch; padding: 9px; gap: 9px; }
+.is-duel .option-card .option-art { width: 100%; aspect-ratio: 1.7; }
+.is-duel .option-check { top: 17px; right: 17px; }
+.option-caption { display: flex; align-items: flex-start; gap: 9px; padding: 3px 4px 5px; }
+.option-letter { display: grid; place-items: center; background: var(--blue-light); color: var(--blue-dark); border-radius: 8px; min-width: 27px; height: 27px; font-size: .86rem; font-weight: 800; }
+.duel-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; grid-column: 1 / -1; }
+.duel-choice { padding: 7px 13px; min-height: 46px; border: 1px solid #d7e3f7; background: var(--white); border-radius: 12px; font-weight: 680; display: flex; align-items: center; justify-content: center; gap: 8px; line-height: 1.25; transition: .17s ease; }
+.duel-choice .option-art { width: 48px; }
+.extra-field, .extra-group { display: block; margin-top: 17px; padding: 14px; border-radius: 14px; background: #f3f7ff; }
+.extra-title { display: block; font-weight: 720; margin-bottom: 8px; }
+.extra-input { min-height: 44px; width: min(100%, 300px); padding: 8px 12px; color: var(--ink); border: 1px solid #bdcdeb; background: var(--white); border-radius: 10px; }
+.extra-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.extra-options .option-card { min-height: 68px; }
+.extra-options .option-art { width: 82px; }
+.form-error { color: #a22132; margin-top: 12px; }
+.quiz-submit { padding-top: 23px; display: flex; flex-direction: column; align-items: stretch; gap: 9px; max-width: 360px; margin-left: auto; }
+.quiz-submit .button { width: 100%; }
+.skip-button { background: var(--white); border-color: var(--line); }
+.question-enter { animation: enter .27s ease both; }
+.extra-group + .extra-group { margin-top: 12px; }
+
+/* 4. Автомобильная загрузка */
+.loading-screen { min-height: calc(100vh - var(--header-height)); min-height: calc(100svh - var(--header-height)); display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; text-align: center; padding-block: 30px; }
+.loading-card { width: min(100%, 600px); padding: clamp(20px, 5vw, 40px); border: 1px solid #294573; border-radius: 26px; background: radial-gradient(ellipse at 50% 0%, #1d3968, #0e1c36 65%); color: var(--white); box-shadow: 0 18px 46px #142a5e26; animation: enter .3s ease both; }
+.loading-card h2 { font-size: clamp(1.8rem, 5vw, 2.7rem); }
+.loading-card h2:focus-visible { outline-color: #9cd6ff; }
+.loading-card p { margin-top: 10px; color: #bdcdec; }
+.dashboard { position: relative; isolation: isolate; width: min(100%, 365px); margin-inline: auto; margin-bottom: 20px; }
+.dash-decoration { position: absolute; inset: 12% 3% 17%; border: 1px solid #587aab66; border-radius: 45% 45% 17% 17%; z-index: -1; }
+.speedometer { display: block; width: 100%; height: auto; aspect-ratio: 30 / 17; }
+.gauge-rim { stroke: #3260a8; stroke-width: 2.25; }
+.gauge-ticks { stroke: #c2d1ea; stroke-width: 6; stroke-dasharray: .45 3.55; stroke-linecap: butt; }
+.gauge-run { stroke: #6adeff; stroke-width: 4.5; stroke-dasharray: 100; stroke-dashoffset: 66; }
+.loading-screen:not(.is-finishing) .gauge-needle { animation: gauge-needle 1.6s ease-in-out alternate infinite; }
+.gauge-needle { fill: #d9faff; stroke: none; transform: rotate(-41deg); transform-box: view-box; transform-origin: 150px 110px; }
+.gauge-hub { fill: #61d9fe; stroke: #eaffff; stroke-width: 2; }
+.dashboard-road { position: absolute; left: 19%; right: 19%; bottom: 2%; height: clamp(7px, 3vw, 16px); border-block: 1px solid #456189; overflow: hidden; }
+.dashboard-road::before { content: ""; position: absolute; inset: 0 -31px 0 0; background: repeating-linear-gradient(90deg, #c2def0 0 15px, transparent 15px 31px) 0 50% / 31px 2px repeat-x; animation: road .35s linear infinite; }
+.drive-progress { width: min(100%, 300px); height: 6px; margin: 20px auto 0; border-radius: 20px; background: #3b577d; overflow: hidden; }
+.drive-progress span { display: block; height: 100%; border-radius: inherit; background: #79deff; transform-origin: left; }
+.loading-screen:not(.is-finishing) .drive-progress span { width: 35%; animation: drive-wait 1.2s ease-in-out infinite; }
+.is-finishing .drive-progress span { animation: drive-progress var(--drive-time, 2s) linear both; }
+.is-finishing .gauge-run { animation: gauge-run var(--drive-time, 2s) ease-out both; }
+.is-finishing .gauge-needle { animation: gauge-needle var(--drive-time, 2s) ease-out both; }
+
+/* 5. Результаты */
+.results-screen { padding-block: 16px 20px; min-height: calc(100svh - var(--header-height)); animation: enter .37s ease both; }
+.results-heading { position: relative; isolation: isolate; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 14px; min-height: 104px; padding: 17px 24px; border-radius: 20px; background: linear-gradient(112deg, #111f51, #194bb5 70%, #2864dc); color: var(--white); box-shadow: 0 13px 28px #182f6524; }
+.result-copy, .result-actions { position: relative; }
+.result-copy { max-width: 100%; }
+.result-copy h2 { font-size: clamp(1.55rem, 2.4vw, 2.2rem); text-wrap: pretty; }
+.result-copy h2:focus-visible, .result-actions button:focus-visible { outline-color: #9cd6ff; }
+.finish-label { color: #b8e5ff; font-size: .76rem; font-weight: 780; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 3px; }
+#results-message { margin-top: 2px; color: #e0ebff; font-size: .88rem; }
+.result-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 0; }
+.result-actions .button { min-height: 40px; padding: 7px 10px; font-size: .84rem; }
+.result-actions .button-quiet { background: #ffffff12; color: var(--white); border-color: #dce9ff55; }
+.result-actions .button-quiet:hover { background: #ffffff24; }
+.is-interrupted { background: linear-gradient(100deg, #182647, #3a537b); }
+.is-interrupted .result-decoration { display: none; }
+
+/* Финишная графика */
+.result-decoration { position: absolute; inset: 0 0 0 auto; width: 30%; z-index: -1; pointer-events: none; }
+.finish-line { position: absolute; inset: -15% -6% -15% auto; width: 49%; opacity: .4; transform: rotate(19deg); background: repeating-conic-gradient(#9acbfa50 0 25%, #123e9c20 0 50%) 0 0 / 45px 45px; mask-image: linear-gradient(90deg, transparent, #000 25%); }
+.finish-medal { position: absolute; top: 50%; left: 47%; display: grid; place-items: center; width: clamp(74px, 11vw, 134px); aspect-ratio: 1; border-radius: 50%; border: 4px solid #a7ecff; background: linear-gradient(140deg, #0d2d72, #245ec8); color: #d3f6ff; box-shadow: 0 0 0 10px #80bdff3d, 0 12px 30px #0a276657; transform: translate(-50%, -50%); }
+.finish-medal { opacity: .35; }
+.finish-medal svg { width: 47%; height: 47%; stroke-width: 2.1; }
+.confetti { opacity: 0; position: absolute; width: 9px; height: 16px; border-radius: 3px; background: #b1f4ff; transform: rotate(var(--turn)); }
+.confetti-one { --turn: 24deg; top: 19%; left: 12%; }
+.confetti-two { --turn: -26deg; top: 16%; left: 71%; width: 7px; height: 12px; background: #ffd884; }
+.confetti-three { --turn: 48deg; bottom: 21%; left: 18%; background: #a8deff; }
+.confetti-four { --turn: -35deg; bottom: 18%; left: 75%; background: #ffd884; }
+.is-celebrating .finish-medal { animation: medal-in .6s cubic-bezier(.18, .78, .33, 1.28) both; }
+.is-celebrating .confetti { animation: confetti-in .65s ease-out both; }
+.is-celebrating .confetti-two, .is-celebrating .confetti-four { animation-delay: .17s; }
+.result-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+.car-card { display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: 1px solid var(--line); background: var(--white); border-radius: 18px; animation: enter .31s ease both; transition: box-shadow .2s ease; }
+.car-card:hover { box-shadow: var(--soft-shadow); }
+.car-main { display: grid; flex: 1; align-content: start; gap: 8px; padding: 12px; }
+.car-photo, .dialog-car-photo { position: relative; background: linear-gradient(135deg, #edf4ff, #dce9fc); overflow: hidden; }
+.car-photo { width: 100%; min-height: 105px; aspect-ratio: 1.65; border-radius: 13px; }
+.car-photo img, .dialog-car-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.car-fallback { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; text-align: center; color: var(--muted); font-size: .78rem; }
+.car-fallback svg { width: clamp(26px, 5vw, 52px); height: auto; }
+.car-info { display: grid; gap: 4px; min-width: 0; overflow-wrap: anywhere; }
+.car-head h3 { font-size: clamp(1.05rem, 2vw, 1.35rem); line-height: 1.2; text-wrap: wrap; }
+.car-head p, .car-specs { color: var(--muted); font-size: .87rem; }
+.car-price { font-weight: 740; }
+.car-specs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3px 10px; }
+.car-specs div { display: flex; flex-wrap: wrap; column-gap: 4px; }
+.car-specs, .car-specs dd { margin: 0; }
+.car-specs dd { color: var(--ink); font-weight: 650; }
+.car-link { justify-self: start; margin-top: 2px; min-height: 38px; border: 0; border-radius: 10px; background: var(--blue-light); color: var(--blue-dark); padding: 6px 11px; font-weight: 730; }
+.car-link:hover { background: #dbe8ff; }
+.compare-toggle { margin-top: 4px; }
+.compare-toggle.is-compared { background: #dbeafe; box-shadow: inset 0 0 0 1px var(--blue); }
+.compare-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; padding: 12px 14px; border: 1px solid #bfd3fb; border-radius: 14px; background: #eef4ff; color: var(--blue-dark); font-weight: 700; }
+.car-pick { display: flex; flex-direction: column; align-items: flex-start; gap: 2px 10px; padding: 8px 12px; background: #f5f8ff; border-top: 1px solid var(--line); }
+.car-pick-label { display: inline-flex; align-items: center; gap: 5px; color: var(--blue-dark); }
+.car-pick-label[data-pick="heart"] { color: #963950; }
+.car-pick-label[data-pick="balance"] { color: #5541a0; }
+.car-pick p, .result-note { color: var(--muted); font-size: .84rem; }
+.result-note { margin-top: 10px; }
+
+/* 6. Диалоги */
+.dialog { width: min(100% - 28px, 680px); max-height: min(90svh, 750px); padding: 20px; overflow: auto; overscroll-behavior: contain; color: var(--ink); border: 1px solid var(--line); border-radius: 20px; background: var(--white); box-shadow: 0 24px 80px #10234435; }
+.dialog[open] { animation: enter .23s ease both; }
+.dialog::backdrop { background: #10234485; backdrop-filter: blur(3px); }
+.dialog-heading { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 14px; font-weight: 720; }
+.dialog-heading h2 { font-size: 1.45rem; }
+.edit-question-list { padding: 0; margin: 0; list-style: none; display: grid; gap: 7px; }
+.edit-question { display: grid; width: 100%; min-height: 48px; grid-template-columns: auto 1fr; column-gap: 11px; text-align: left; border: 1px solid var(--line); padding: 8px 10px; border-radius: 12px; background: var(--white); align-items: center; }
+.edit-question:hover { border-color: #95b2fa; background: #f3f7ff; }
+.edit-question-number { grid-row: 1 / span 2; align-self: start; min-width: 30px; text-align: center; padding: 3px; background: var(--blue-light); color: var(--blue-dark); border-radius: 7px; font-weight: 700; }
+.edit-question-answer { grid-column: 2; color: var(--muted); font-size: .89rem; }
+.dialog-overview { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); align-items: start; gap: 16px; }
+.dialog-car-photo { border-radius: 13px; aspect-ratio: 1.6; }
+.dialog-car-info { overflow-wrap: anywhere; }
+.dialog-car-info p + p { margin-top: 6px; }
+.dialog-specs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px 10px; margin: 12px 0; }
+.dialog-specs dd { margin: 0; font-weight: 650; }
+.dialog-specs dt { color: var(--muted); font-size: .87rem; }
+.dialog-score-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 12px 0; }
+.dialog-score-grid div { padding: 9px; border-radius: 10px; background: #eef4ff; }
+.dialog-score-grid dt { color: var(--muted); font-size: .8rem; }
+.dialog-score-grid dd { margin: 2px 0 0; font-weight: 760; color: var(--blue-dark); }
+.dialog-section { margin-top: 13px; overflow-wrap: anywhere; }
+.compare-dialog { width: min(100% - 20px, 1040px); }
+.compare-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.compare-car { padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: #f8fbff; }
+.compare-car h3 { margin-top: 10px; }
+.compare-car p { color: var(--muted); }
+.compare-specs { margin-top: 16px; overflow-x: auto; }
+.compare-row { display: grid; grid-template-columns: minmax(150px, 1fr) repeat(2, minmax(120px, 1fr)); gap: 10px; align-items: center; padding: 9px 10px; border-bottom: 1px solid var(--line); }
+.compare-row span { color: var(--muted); font-size: .9rem; }
+.compare-row strong { text-align: center; }
+.compare-best { color: var(--blue-dark); background: #dbeafe; border-radius: 7px; padding: 3px 6px; }
+.compare-notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 16px; }
+.compare-notes > div { padding: 12px; border: 1px solid var(--line); border-radius: 12px; }
+
+/* 7. Анимации и адаптация */
+@keyframes enter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes select { from { scale: .7; } to { scale: 1; } }
+@keyframes drive-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes drive-wait { from { transform: translateX(-100%); } to { transform: translateX(286%); } }
+@keyframes gauge-needle { from { transform: rotate(-118deg); } to { transform: rotate(107deg); } }
+@keyframes gauge-run { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 8; } }
+@keyframes road { to { transform: translateX(-31px); } }
+@keyframes medal-in { from { opacity: 0; transform: translate(-50%, -50%) scale(.6); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+@keyframes confetti-in { 0% { opacity: 0; transform: translateY(-16px) rotate(0); } 28% { opacity: 1; } 100% { opacity: 0; transform: translateY(22px) rotate(var(--turn)); } }
+@keyframes dialog-out { to { opacity: 0; transform: translateY(4px); } }
+.dialog[open].closing { animation: dialog-out .12s ease-in both; }
+.dialog.closing::backdrop { animation: dialog-out .12s ease-in both; }
+.car-card:nth-child(2) { animation-delay: .06s; }
+.car-card:nth-child(3) { animation-delay: .12s; }
+.car-card.selected-car { border-color: var(--blue); box-shadow: 0 0 0 1px var(--blue); }
+.compromise-section { padding: 16px; border-radius: 14px; background: var(--white); }
+.compromise-section li { margin-block: 8px; }
+.compromise-section button { margin-inline-start: 8px; }
+.compare-row.differs { background: #f4f7fc; }
+.compare-notes ul, .dialog-section ul { padding-inline-start: 1.1rem; }
+.compare-grid, .compare-notes, .compare-row { overflow-wrap: anywhere; }
+
+@media (max-width: 1020px) {
+    .shell { width: min(100% - 48px, 1248px); }
+    .hero { gap: 25px; padding-block: 49px 52px; }
+    .hero h1 { font-size: clamp(2.65rem, 5.1vw, 3.4rem); }
+    .benefit-card { padding: 19px; }
+}
+
+@media (max-width: 760px) {
+    :root { --header-height: 66px; }
+    .header-inner { grid-template-columns: 1fr auto; gap: 10px; }
+    .home-nav { display: none; }
+    .header-cta { font-size: .8rem; padding-inline: 9px; min-height: 43px; }
+    .header-cta svg { display: none; }
+    .brand { font-size: 1.35rem; }
+    .brand img { width: 34px; height: 34px; }
+    .hero { grid-template-columns: 1fr; align-content: center; gap: 26px; padding-block: 33px 36px; }
+    .hero h1 { font-size: clamp(2.5rem, 8vw, 3.85rem); max-width: 570px; }
+    .hero p { margin-top: 16px; }
+    .hero-actions { margin-top: 19px; gap: 12px; }
+    .hero-media { border-radius: 22px; }
+    .hero-media img { aspect-ratio: 1.55; }
+    .benefits, .how { padding-block: 37px; }
+    .benefit-grid, .steps { grid-template-columns: 1fr; gap: 11px; margin-top: 20px; }
+    .benefit-card h3 { margin-top: 13px; }
+    .steps li { padding-block: 10px; }
+    .bottom-section { padding-bottom: 38px; }
+    .bottom-cta { padding: 24px; }
+    .quiz-screen { padding-block: 20px 32px; }
+    .quiz-panel { padding: 12px 15px 18px; border-radius: 20px; }
+    .quiz-navigation { margin-bottom: 7px; }
+    .question { margin-top: 19px; }
+    .quiz-options { gap: 9px; margin-top: 14px; }
+    .option-card { gap: 8px; min-height: 88px; }
+    .option-art { width: clamp(81px, 15vw, 112px); }
+    .quiz-submit { padding-top: 15px; }
+    .results-screen { padding-block: 24px 40px; }
+    .results-heading { grid-template-columns: 1fr; padding: 22px; }
+    .result-actions { margin-top: 8px; }
+    .result-list { grid-template-columns: minmax(0, 1fr); }
+    .car-main { grid-template-columns: minmax(0, 30%) minmax(0, 1fr); align-items: center; gap: clamp(12px, 3vw, 34px); }
+    .car-photo { min-height: 105px; aspect-ratio: 1.15; }
+    .car-specs { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+    .car-pick { flex-direction: row; align-items: center; flex-wrap: wrap; min-height: 0; }
+    .compare-toolbar { align-items: stretch; flex-direction: column; }
+}
+
+@media (max-width: 490px) {
+    .shell { width: calc(100% - 28px); }
+    .brand { font-size: 1.24rem; gap: 6px; }
+    .hero-media img { aspect-ratio: 1.4; }
+    .footer-inner { flex-wrap: wrap; gap: 9px; padding-block: 12px; }
+    .quiz-screen { width: calc(100% - 18px); }
+    .option-card { flex-direction: column; align-items: stretch; padding: 7px 8px 9px; min-height: 112px; }
+    .option-card .option-art { width: 100%; max-height: 101px; }
+    .option-name { font-size: .9rem; }
+    .option-description { font-size: .79rem; }
+    .option-check { width: 18px; height: 18px; }
+    .extra-options .option-art { max-height: 81px; }
+    .is-duel { grid-template-columns: 1fr; }
+    .is-duel .option-card .option-art { max-height: none; }
+    .duel-actions { gap: 8px; }
+    .duel-choice { padding: 6px 7px; font-size: .83rem; }
+    .quiz-submit .button { width: 100%; }
+    .loading-screen { padding-block: 15px; }
+    .loading-card { padding: 16px; }
+    .dashboard { width: min(100%, 270px); margin-bottom: 14px; }
+    .drive-progress { margin-top: 15px; }
+    .car-main { align-items: start; }
+    .car-specs { gap: 4px 10px; }
+    .dialog-overview { grid-template-columns: 1fr; }
+    .compare-grid, .compare-notes { gap: 6px; }
+    .compare-car { padding: 6px; }
+    .compare-dialog { padding: 12px; }
+    .compare-car .car-link { width: 100%; font-size: .82rem; }
+    .compare-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 8px; font-size: .9rem; }
+    .compare-row span { grid-column: 1 / -1; }
+    .compare-row strong { text-align: left; }
+    .result-copy { max-width: none; }
+    .finish-label { padding-right: 65px; }
+    .result-decoration { width: 29%; height: 95px; }
+    .finish-medal { width: 40px; top: 35%; left: 51%; border-width: 2px; box-shadow: 0 0 0 5px #80bdff3d; }
+    .confetti { width: 5px; height: 8px; }
+    .finish-line { opacity: .25; }
+}
+
+@media (max-width: 390px) and (max-height: 670px) {
+    .hero { gap: 18px; padding-block: 23px 24px; }
+    .hero h1 { font-size: clamp(2rem, 10vw, 2.45rem); }
+    .hero p { margin-top: 12px; }
+    .hero-actions { margin-top: 15px; gap: 8px; }
+    .hero-actions .button { min-height: 48px; padding-inline: 14px; }
+    .hero-time { font-size: .9rem; }
+    .hero-media img { aspect-ratio: 1.6; }
+}
+
+@media (max-width: 350px) {
+    .header-inner { gap: 7px; }
+    .header-inner .brand { font-size: 1.14rem; }
+    .header-cta { font-size: .72rem; padding-inline: 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+    .drive-progress { display: none; }
+}
+
+
+/* 10. Устойчивый опрос: прокручиваются ответы, навигация остаётся на месте. */
+.quiz-screen { padding-block: 18px; }
+.quiz-panel { display: flex; flex-direction: column; height: calc(100dvh - 120px); min-height: 420px; }
+.quiz-navigation, .quiz-progress-meta, #quiz-progress, .quiz-submit { flex-shrink: 0; }
+.question { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 12px 4px; scrollbar-gutter: stable; }
+.quiz-submit { width: 100%; max-width: 360px; margin: 0 auto; padding-top: 12px; }
+.quiz-options .option-card { min-height: 108px; }
+.quiz-options.is-duel .option-art { height: clamp(110px, 23dvh, 240px); object-fit: cover; }
+
+/* Единый синий акцент и короткий проезд машины на кнопке. */
+:root { --primary-fill: var(--blue); }
+.button-primary { background: var(--primary-fill); }
+/* Заголовки готовых вариантов светлее основной кнопки. */
+.scenario-card h3 { background: linear-gradient(135deg, #e7f2ff, #d5e6ff); color: #214a83; border-bottom: 1px solid #c9ddf8; }
+[data-action="start"] { position: relative; overflow: hidden; }
+.start-car { position: absolute; width: 70px; height: 32px; left: -80px; bottom: 2px; opacity: .65; animation: start-drive 1s ease-in-out forwards; pointer-events: none; }
+[data-start-label] { position: relative; z-index: 1; }
+@keyframes start-drive { to { left: 110%; } }
+
+/* Вся карточка открывает подробности; сравнение — самостоятельная кнопка. */
+.car-card, .scenario-card { position: relative; cursor: pointer; }
+.card-open { position: static; padding: 0; border: 0; background: transparent; }
+.card-open::after { content: ""; position: absolute; inset: 0; border-radius: 18px; z-index: 1; }
+.card-open:focus-visible::after { outline: 3px solid var(--blue); outline-offset: -3px; }
+.compare-toggle { position: relative; z-index: 2; }
+.car-rating { color: var(--blue-dark); font-size: .85rem; font-weight: 700; margin-top: 8px; }
+.car-photo, .dialog-car-photo { background: white; }
+.car-photo { aspect-ratio: 1.65; }
+.car-head { min-height: 64px; }
+.car-main { flex: 1; }
+.car-pick { margin-top: auto; }
+
+/* Одна полоса прокрутки подробностей и таблица для двух или трёх машин. */
+.dialog { scrollbar-color: #4280e9 #edf5ff; scrollbar-width: thin; scrollbar-gutter: stable; padding-right: 24px; }
+.dialog::-webkit-scrollbar { width: 8px; }
+.dialog::-webkit-scrollbar-track { background: #edf5ff; border-radius: 8px; margin-block: 16px; }
+.dialog::-webkit-scrollbar-thumb { background: #4280e9; border-radius: 8px; }
+.dialog::-webkit-scrollbar-thumb:hover { background: #2457e9; }
+#compare-dialog-content { overflow-x: auto; }
+.compare-grid, .compare-notes { grid-template-columns: repeat(var(--compare-count, 2), minmax(150px, 1fr)); }
+.compare-specs { overflow: visible; }
+.compare-row { grid-template-columns: minmax(145px, 1fr) repeat(var(--compare-count, 2), minmax(150px, 1fr)); }
+.compare-grid, .compare-notes { padding-left: 155px; }
+.compare-row span { grid-column: auto; }
+.compare-row strong { text-align: center; }
+.compare-grid, .compare-notes, .compare-specs { min-width: calc(155px + var(--compare-count, 2) * 160px); }
+
+/* Профиль и сохранение результата используют общие цвета сайта. */
+.profile-panel { background: white; border: 1px solid var(--line); border-radius: 20px; padding: clamp(18px, 3vw, 28px); margin-top: 24px; display: grid; gap: 14px; }
+.profile-panel h2 { font-size: 1.5rem; }
+.profile-panel > .button { justify-self: start; }
+.dna-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 30px; }
+.dna-item { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.dna-track { grid-column: 1 / -1; border-radius: 20px; overflow: hidden; height: 9px; background: #eaf1ff; }
+.dna-track span { display: block; width: var(--percent); height: 100%; background: var(--blue); border-radius: inherit; animation: dna-fill .8s ease both; transform-origin: left; }
+@keyframes dna-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+#result-card-preview { display: block; width: 100%; height: auto; border-radius: 12px; }
+.share-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+@media (max-width: 600px) {
+    .quiz-screen { padding-block: 8px; }
+    .quiz-panel { height: calc(100dvh - 92px); min-height: 350px; padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+    .quiz-options .option-card { min-height: 98px; }
+    .car-photo { aspect-ratio: 1.65; }
+    .dna-grid { grid-template-columns: minmax(0, 1fr); }
+    .profile-panel .extra-input { width: 100%; min-width: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .start-car, .dna-track span { animation: none; }
+    *, *::before, *::after { scroll-behavior: auto !important; }
+}
+
+
+/* 11. Финальная доводка AutoChoice: доступная навигация и единое оформление. */
+
+/* Длинный проезд машины намеренно заметен, но не задерживает пользователей с reduced-motion. */
+.start-car { width: 82px; height: 34px; left: -90px; opacity: .95; animation: start-drive 1s cubic-bezier(.24,.04,.72,1) forwards; }
+[data-action="start"].starting { isolation: isolate; }
+[data-action="start"].starting [data-start-label] { z-index: 2; text-shadow: 0 1px 3px #163c8b; }
+
+/* Пропуск — видимая, но вторичная кнопка, а не белое пятно на белом фоне. */
+.quiz-submit { align-self: center; }
+.skip-button { background: #e7f0ff; color: #1641ad; border: 2px solid #90b6fc; font-weight: 800; }
+.skip-button:hover { background: #d5e6ff; border-color: #608ff2; }
+.skip-button:focus-visible { outline-offset: 2px; }
+
+/* Слепая дуэль: изображения равной высоты, подписи только A/Б, без стилевых подсказок. */
+.quiz-options.is-duel { align-items: stretch; }
+.quiz-options.is-duel .option-card { min-height: 0; }
+.quiz-options.is-duel .option-caption { align-items: center; }
+.quiz-options.is-duel .option-name { font-size: 1rem; }
+.duel-actions { align-self: stretch; }
+.duel-choice { min-height: 52px; font-weight: 750; border-width: 2px; background: #f9fbff; }
+.duel-choice-icon { display: inline-grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; font-size: 1.25rem; font-weight: 800; color: var(--blue); background: #e5efff; }
+.duel-choice.is-selected .duel-choice-icon { background: var(--blue); color: #fff; }
+
+/* Большие экраны: один постоянный каркас опроса, без внутренних полос прокрутки. */
+.quiz-screen { padding-block: 8px; min-height: calc(100dvh - var(--header-height)); }
+.quiz-panel { height: calc(100dvh - var(--header-height) - 16px); max-height: none; min-height: 0; padding-top: 15px; padding-bottom: 15px; overflow: hidden; }
+.quiz-navigation { margin-bottom: 5px; }
+.question { margin-top: 8px; padding: 6px 4px 2px; overflow-y: auto; scrollbar-width: none; scrollbar-gutter: auto; }
+.question::-webkit-scrollbar { display: none; }
+.quiz-options { margin-top: 12px; }
+.quiz-hint { margin-top: 3px; }
+.quiz-submit { flex-shrink: 0; gap: 7px; padding-top: 8px; max-width: 360px; }
+.quiz-submit .button { min-height: 43px; padding-block: 8px; }
+
+/* Ненавязчивая прокрутка страниц без системной полосы. Свайпы и колесо работают. */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+.compare-root { overflow-x: auto; scrollbar-width: none; }
+.compare-root::-webkit-scrollbar { display: none; }
+
+/* Модальное окно: собственная внутренняя прокрутка с отступом 12px справа. */
+.dialog { padding: 0; overflow: hidden; scrollbar-width: none; }
+.dialog-scroll-surface { max-height: min(90svh, 750px); overflow-y: auto; overscroll-behavior: contain;
+    margin-right: 12px; padding: 20px 8px 20px 22px; scrollbar-color: #5185ea #edf5ff; scrollbar-width: thin; }
+.dialog-scroll-surface::-webkit-scrollbar { width: 7px; }
+.dialog-scroll-surface::-webkit-scrollbar-track { background: #edf5ff; border-radius: 20px; }
+.dialog-scroll-surface::-webkit-scrollbar-thumb { background: #5185ea; border-radius: 20px; }
+.dialog-scroll-surface::-webkit-scrollbar-thumb:hover { background: #2758c9; }
+
+/* Выполнение обязательных правил обозначаем синими галочками. */
+.dialog-conditions { margin-top: 16px; }
+.dialog-conditions h4 { font-size: 1rem; margin: 0 0 8px; }
+.condition-row { display: flex; align-items: center; gap: 9px; padding: 7px 0; border-top: 1px solid #e9eff9; line-height: 1.4; }
+.condition-mark { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; flex: none; font-size: 1rem; font-weight: 900; }
+.condition-matched { background: #e2edff; color: #1c58d6; }
+.condition-rejected { background: #ffeced; color: #be3942; }
+.condition-unknown { background: #edf1f7; color: #5d6c87; }
+
+/* Все три результата имеют одинаковые нижние блоки и выровненные метки. */
+.result-list > .car-card { height: 100%; }
+.car-main { flex-grow: 1; }
+.car-pick { display: grid; grid-template-columns: 1fr; align-content: start; gap: 7px; min-height: 116px; padding: 12px 14px; }
+.car-pick-label { min-height: 27px; width: fit-content; }
+.car-pick p { line-height: 1.42; }
+
+/* Улучшенная ДНК: понятная информационная иерархия, без лишних метрик. */
+.dna-panel { position: relative; overflow: hidden; background: linear-gradient(145deg,#fff 15%,#f0f6ff 100%); box-shadow: 0 16px 42px #2559bd0d; border-color: #cbdcf8; }
+.dna-panel::before { content:""; position:absolute; top:-75px; right:-75px; width:200px; height:200px; border-radius:50%; background:#d7e8ff70; pointer-events:none; }
+.dna-panel-heading { display:flex; gap:14px; align-items:center; position:relative; }
+.dna-panel-icon { width:51px; height:51px; background:linear-gradient(145deg,#2f74ef,#1c4ebc); color:white; border-radius:16px; display:grid; place-items:center; font-size:1.6rem; box-shadow:0 9px 22px #275dbb27; }
+.dna-eyebrow { color:#3563af; font-size:.82rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+.dna-panel h2 { font-size:clamp(1.4rem,2.5vw,1.95rem); }
+.dna-lead, .dna-description { color:#536782; line-height:1.55; max-width:72ch; }
+.dna-grid { position:relative; background:#fff; border:1px solid #e3ecfa; border-radius:17px; padding:20px; }
+.dna-item strong { color:#2457d5; }
+.dna-track { height:11px; }
+.dna-track span { background:linear-gradient(90deg,#68a8ff,#2457eb); }
+.dna-best-car { display:grid; gap:3px; padding:13px 17px; background:#eaf2ff; border-left:4px solid var(--blue); border-radius:12px; }
+.dna-best-car span { color:#547098; font-size:.86rem; }
+.dna-best-car strong { color:#133c93; font-size:1.12rem; }
+
+@media(max-width:700px) {
+  /* Две фотографии одновременно, иначе высокая дуэль вынуждает пролистывать страницу. */
+  .quiz-screen { width:calc(100% - 16px); padding-block:6px; }
+  .quiz-panel { height:calc(100dvh - var(--header-height) - 12px); padding:9px 12px max(9px, env(safe-area-inset-bottom)); border-radius:18px; }
+  .quiz-progress-meta { font-size:.78rem; margin-bottom:5px; }
+  .quiz-navigation .button { min-height:34px; padding-block:5px; }
+  .question { margin-top:5px; padding:4px 1px 0; }
+  .question h2 { font-size:clamp(1.12rem,5vw,1.55rem); line-height:1.15; }
+  .quiz-hint { font-size:.8rem; line-height:1.3; }
+  .quiz-options { grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px; margin-top:9px; }
+  .quiz-options .option-card { min-height:0; padding:5px 7px 7px; gap:5px; }
+  .quiz-options .option-card .option-art { width:100%; height:clamp(52px,11.5dvh,80px); max-height:none; aspect-ratio:1.85; object-fit:cover; }
+  .quiz-options .option-name { font-size:clamp(.74rem,2.6vw,.9rem); }
+  .quiz-options .option-description { font-size:.7rem; line-height:1.18; }
+  .option-check { top:5px; right:5px; }
+  .quiz-options.is-duel { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .quiz-options.is-duel .option-card .option-art { height:clamp(86px,21dvh,150px); aspect-ratio:1.5; object-fit:cover; }
+  .option-caption { padding:1px 0; gap:5px; }
+  .duel-actions { gap:7px; }
+  .duel-choice { font-size:.77rem; padding:5px; min-height:45px; }
+  .duel-choice-icon { width:20px; height:20px; font-size:1rem; }
+  .quiz-submit { width:100%; max-width:none; padding-top:6px; gap:5px; }
+  .quiz-submit .button { min-height:39px; font-size:.88rem; padding:6px 10px; }
+  .extra-field, .extra-group { margin-top:8px; padding:8px; }
+  .extra-options .option-card { min-height:0; }
+  .extra-options .option-art { max-height:55px; }
+  .extra-title { font-size:.85rem; margin-bottom:3px; }
+  .extra-input { min-height:35px; }
+  .car-pick { min-height:0; }
+  .dialog-scroll-surface { margin-right:9px; padding:14px 5px 18px 14px; }
+  .dna-grid { padding:15px; }
+}
+@media(max-height:540px) and (orientation:landscape){
+  /* В экстремально низком окне содержимое прокручивается внутри, кнопки остаются на месте. */
+  .quiz-panel { min-height:0; }
+  .quiz-options .option-card .option-art { height:45px; }
+  .quiz-options.is-duel .option-card .option-art { height:65px; }
+}
+@media(prefers-reduced-motion:reduce){
+  .start-car, .dna-track span { animation:none!important; }
+}
+
+
+/* 12. Финальные уточнения: заметная стартовая анимация и сравнение на телефоне. */
+[data-action="start"].starting:disabled { opacity:1; }
+.button-white .start-car path,.button-white .start-car circle,
+.button-outline .start-car path,.button-outline .start-car circle { fill:var(--blue); }
+.compare-swipe-hint { margin:0 0 10px; font-size:.85rem; color:#506c9a; font-weight:650; }
+@media (min-width:701px) { .compare-swipe-hint { display:none; } }
+
+/* 12. Поиск автомобиля без лишнего select — подсказки внутри блока. */
+.car-search-panel { position: relative; }
+.car-search-lead { color: var(--muted, #64748b); margin: 0; line-height: 1.5; }
+.car-search-box { display: grid; gap: 9px; max-width: 720px; }
+.car-search-box > label { font-weight: 740; color: var(--ink); }
+.car-search-combobox { position: relative; width: 100%; }
+.car-search-input.extra-input {
+  width: 100%; max-width: none; min-height: 56px; padding: 13px 18px;
+  font-size: 1.06rem; border-radius: 15px; border: 1.5px solid #b4c9eb;
+  background: #f8fbff; box-shadow: 0 2px 12px #174f9820;
+}
+.car-search-input:focus-visible { outline: 3px solid #84b6ff70; outline-offset: 2px; border-color: var(--blue); }
+.car-search-suggestions {
+  position: absolute; z-index: 60; left: 0; right: 0; top: calc(100% + 7px);
+  list-style: none; margin: 0; padding: 6px; max-height: min(320px, 50vh);
+  overflow-y: auto; border: 1px solid #c9d9f2; border-radius: 14px;
+  box-shadow: 0 15px 35px #152a542c; background: #fff;
+}
+.car-search-suggestions li { margin: 0; padding: 0; }
+.car-search-option { display: flex; width: 100%; gap: 4px; flex-direction: column; text-align: left;
+  padding: 10px 13px; color: var(--ink); background: transparent; border: none; border-radius: 9px; cursor: pointer; }
+.car-search-option small { color: #64748b; }
+.car-search-option:hover, .car-search-option.is-active, .car-search-option:focus-visible { background: #edf4ff; outline: none; }
+.car-search-empty { padding: 12px 14px !important; color: #64748b; }
+.car-search-selected { color: #206ac9; display: inline-flex; align-items: center; gap: 6px; font-size: .9rem; }
+.car-search-selected svg { width: 16px; height: 16px; }
+.profile-confidence-note { background: #edf4ff; border: 1px solid #c6dcff; padding: 14px 16px; border-radius: 14px; }
+@media (max-width: 600px) { .car-search-input.extra-input { min-height: 52px; font-size: 1rem; } }
+
+/* 13. Без ответов не рисуем случайный топ: предлагаем заполнить хотя бы один вопрос. */
+.answers-empty-panel {display:flex;gap:22px;align-items:flex-start;padding:clamp(22px,3vw,34px);margin:20px 0 0;background:linear-gradient(130deg,#f8fbff,#e9f3ff);border:1px solid #cddff9;border-radius:22px;box-shadow:0 10px 28px #2356a10b;}
+.answers-empty-panel h3 {font-size:clamp(1.18rem,2.1vw,1.55rem);margin:0 0 8px;color:#183c74;}
+.answers-empty-panel p {color:#4f6480;line-height:1.65;margin:0 0 19px;max-width:70ch;}
+.answers-empty-symbol {display:grid;place-items:center;flex:none;width:55px;height:55px;border-radius:17px;background:#d9eafd;color:#2055a4;font-size:1.8rem;font-weight:800;}
+.car-search-description {font-size:.98rem;line-height:1.6;color:#506783;max-width:70ch;margin:0;}
+.car-search-help {font-size:.78rem;color:#73869e;line-height:1.45;margin:-2px 0 3px;}
+/* ДНК и блок экспорта: мягкие карточки, выразительная кнопка сохранения. */
+.dna-panel {gap:17px;background:linear-gradient(153deg,#ffffff 0%,#f4f8ff 78%,#e8f2ff 100%);}
+.dna-panel .dna-grid {box-shadow:0 6px 20px #2b5c9b0c;}
+.dna-panel>.button-primary {min-height:54px;border-radius:14px;box-shadow:0 10px 24px #255bdd26;}
+.dna-panel .dna-best-car {border-left:4px solid #4d89ee;background:#ecf4ff;padding:17px 19px;}
+#result-card-preview {width:min(100%,500px);margin-inline:auto;border-radius:18px;box-shadow:0 16px 40px #15396b24;border:1px solid #dce8f8;}
+.share-actions {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));max-width:500px;margin:18px auto 4px;gap:12px;}
+.share-actions .button {min-height:52px;}
+@media(max-width:600px){.answers-empty-panel{padding:20px;gap:13px;}.answers-empty-symbol{width:42px;height:42px;font-size:1.35rem;}.share-actions{grid-template-columns:1fr;}}
+
+/* 14. Тёмная тема. Палитра изолирована: не меняет структуру и логику экранов. */
+.header-actions { justify-self: end; display:flex; align-items:center; gap:10px; min-width:0; }
+.theme-toggle { display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  min-height:44px; padding:8px 12px; border-radius:13px; border:1px solid var(--line);
+  background:var(--white); color:var(--ink); white-space:nowrap; font-size:.88rem;
+  font-weight:740; transition:background .18s ease,border-color .18s ease,color .18s ease; }
+.theme-toggle:hover { background:var(--blue-light); border-color:var(--blue); }
+.theme-toggle svg { width:18px; height:18px; }
+@media(max-width:820px) { .theme-toggle-label { display:none; } .theme-toggle { width:44px; padding:8px; } }
+@media(max-width:600px) { .header-actions { gap:6px; } .header-inner { grid-template-columns:1fr auto; gap:10px; } }
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg:#0b1222;
+  --white:#172236;       /* Фон обычных карточек, а не белый текст кнопок. */
+  --ink:#f0f5ff;
+  --muted:#b0c0d8;
+  --blue:#73a3ff;
+  --blue-dark:#bad1ff;
+  --blue-light:#223754;
+  --line:#334764;
+  --primary-fill:#3774ef;
+  --soft-shadow:0 16px 44px rgba(0,5,15,.42);
+}
+[data-theme="dark"] body { background:var(--bg); }
+[data-theme="dark"] .site-header { background:rgba(14,23,40,.95); }
+[data-theme="dark"] .theme-toggle { background:#233650; color:#e8f3ff; border-color:#52698b; }
+[data-theme="dark"] .theme-toggle:hover { background:#2d4770; }
+[data-theme="dark"] .button-primary { background:#3e79ed; color:#fff; box-shadow:0 7px 20px #10265188; }
+[data-theme="dark"] .button-primary:hover:not(:disabled) { background:#5a92ff; box-shadow:0 9px 23px #102651bb; }
+[data-theme="dark"] .button-secondary,[data-theme="dark"] .button-outline { background:#1e3049; color:#d9e8ff; border-color:#5879a5; }
+[data-theme="dark"] .button-secondary:hover,[data-theme="dark"] .button-outline:hover { background:#2b456a; }
+[data-theme="dark"] .button-quiet { color:#d1e2ff; }
+[data-theme="dark"] .button-white { background:#fff; color:#1a449c; }
+[data-theme="dark"] .skip-button { background:#233d60; color:#deedff; border-color:#679bf0; }
+[data-theme="dark"] .skip-button:hover { background:#30527c; border-color:#99baff; }
+[data-theme="dark"] .icon-button { color:#d4e5ff; background:#2a4163; }
+[data-theme="dark"] .icon-button:hover { background:#3b5681; }
+[data-theme="dark"] .hero-media { background:#172c49; border-color:#436082; }
+[data-theme="dark"] .scenarios,[data-theme="dark"] .benefits { background:#101d30; border-color:var(--line); }
+[data-theme="dark"] .scenario-card { border-color:#385173; box-shadow:0 8px 28px #0004; }
+[data-theme="dark"] .scenario-card h3 { background:linear-gradient(125deg,#263d5e,#315382); color:#f0f6ff; border-bottom-color:#45658f; }
+/* Изображения имеют одинаковый нейтральный фон в обеих темах: у JPG не появляется тёмная рамка. */
+[data-theme="dark"] .scenario-photo { background:#fff; }
+[data-theme="dark"] .scenario-facts dd { color:#b5ceff; }
+[data-theme="dark"] .benefit-card { border-color:var(--line); }
+[data-theme="dark"] .steps li { border-color:#416080; }
+[data-theme="dark"] .bottom-cta { background:radial-gradient(ellipse at 100% 0,#2457a8 0,transparent 70%),#112854; color:#fff; }
+[data-theme="dark"] .site-footer { background:#101a2c; }
+[data-theme="dark"] .quiz-panel { border-color:#3b5270; }
+[data-theme="dark"] #quiz-progress,[data-theme="dark"] #quiz-progress::-webkit-progress-bar { background:#2a405f; }
+[data-theme="dark"] .option-card,[data-theme="dark"] .duel-choice { background:#1d2c43; color:var(--ink); border-color:#3e5678; }
+[data-theme="dark"] .option-card:hover:not(:disabled),[data-theme="dark"] .duel-choice:hover { border-color:#83afff; }
+[data-theme="dark"] .option-card.is-selected,[data-theme="dark"] .duel-choice.is-selected { background:#29486f; border-color:#87afff; }
+[data-theme="dark"] .option-check { border-color:#6381a8; background:#12223b; }
+[data-theme="dark"] .option-card.is-selected .option-check { background:#427df1; color:#fff; }
+[data-theme="dark"] .option-art { background:#edf3fb; }
+[data-theme="dark"] .duel-choice-icon { color:#accbff; background:#304a6d; }
+[data-theme="dark"] .duel-choice.is-selected .duel-choice-icon { background:#477eef; color:#fff; }
+[data-theme="dark"] .extra-field,[data-theme="dark"] .extra-group { background:#20324c; }
+[data-theme="dark"] .extra-input { background:#152239; color:#eef4ff; border-color:#57749c; }
+[data-theme="dark"] .extra-input::placeholder { color:#a1b4ce; opacity:1; }
+[data-theme="dark"] .loading-card { color:#fff; }
+[data-theme="dark"] .results-heading { color:#fff; background:linear-gradient(115deg,#142452,#2450a0 70%,#2e62bd); }
+[data-theme="dark"] .results-heading .button-quiet { color:#fff; }
+[data-theme="dark"] .results-heading .button-outline { background:#213e71; color:#fff; border-color:#779ee5; }
+[data-theme="dark"] .car-card { border-color:var(--line); }
+[data-theme="dark"] .car-photo,[data-theme="dark"] .dialog-car-photo { background:#fff; }
+[data-theme="dark"] .car-link { background:#274365; color:#dceaff; }
+[data-theme="dark"] .car-link:hover { background:#335781; }
+[data-theme="dark"] .compare-toggle.is-compared { background:#315783; }
+[data-theme="dark"] .compare-toolbar { color:#e0eeff; background:#1c3555; border-color:#40679c; }
+[data-theme="dark"] .car-pick { background:#1d2d45; }
+[data-theme="dark"] .car-pick-label[data-pick="heart"] { color:#ffadbd; }
+[data-theme="dark"] .car-pick-label[data-pick="balance"] { color:#c8b7ff; }
+[data-theme="dark"] .dialog { box-shadow:0 28px 85px #000a; }
+[data-theme="dark"] .dialog::backdrop { background:#030914c9; }
+[data-theme="dark"] .dialog-scroll-surface { scrollbar-color:#668de5 #24344d; }
+[data-theme="dark"] .dialog-scroll-surface::-webkit-scrollbar-track { background:#24344d; }
+[data-theme="dark"] .dialog-scroll-surface::-webkit-scrollbar-thumb { background:#668de5; }
+[data-theme="dark"] .dialog-score-grid div { background:#243a58; }
+[data-theme="dark"] .edit-question { background:#1a2a42; }
+[data-theme="dark"] .edit-question:hover { background:#27405f; border-color:#7d9fe2; }
+[data-theme="dark"] .compare-car { background:#1d2d46; border-color:#3d5778; }
+[data-theme="dark"] .compare-best { color:#dceeff; background:#28547f; }
+[data-theme="dark"] .compare-row.differs { background:#1c304b; }
+[data-theme="dark"] .compare-swipe-hint { color:#b8d0f5; }
+[data-theme="dark"] .profile-panel { background:#17263b; }
+[data-theme="dark"] .dna-panel { background:linear-gradient(145deg,#1b2a42,#1a3554 80%,#233e62); border-color:#3d587f; box-shadow:0 14px 40px #0005; }
+[data-theme="dark"] .dna-panel::before { background:#497cc232; }
+[data-theme="dark"] .dna-eyebrow { color:#b7d1ff; }
+[data-theme="dark"] .dna-lead,[data-theme="dark"] .dna-description { color:#c1d0e6; }
+[data-theme="dark"] .dna-grid { background:#19283d; border-color:#405b80; box-shadow:0 7px 22px #0003; }
+[data-theme="dark"] .dna-item strong { color:#a3c4ff; }
+[data-theme="dark"] .dna-track { background:#2a4164; }
+[data-theme="dark"] .dna-best-car { background:#254265; border-left-color:#78aafa; }
+[data-theme="dark"] .dna-best-car span { color:#c3d5ec; }
+[data-theme="dark"] .dna-best-car strong { color:#f0f6ff; }
+[data-theme="dark"] .car-search-input.extra-input { background:#1c304b; box-shadow:none; border-color:#6482ad; }
+[data-theme="dark"] .car-search-suggestions { background:#1b2a40; border-color:#547198; box-shadow:0 16px 34px #0009; }
+[data-theme="dark"] .car-search-option small { color:#aec2df; }
+[data-theme="dark"] .car-search-option:hover,[data-theme="dark"] .car-search-option.is-active,[data-theme="dark"] .car-search-option:focus-visible { background:#304b6d; }
+[data-theme="dark"] .car-search-empty,[data-theme="dark"] .car-search-help,[data-theme="dark"] .car-search-description { color:#bccde4; }
+[data-theme="dark"] .car-search-selected { color:#a2c7ff; }
+[data-theme="dark"] .profile-confidence-note { background:#1c3554; border-color:#46699d; }
+[data-theme="dark"] .answers-empty-panel { background:linear-gradient(130deg,#1b304a,#213c60); border-color:#47648c; box-shadow:0 10px 25px #0004; }
+[data-theme="dark"] .answers-empty-panel h3 { color:#e4f0ff; }
+[data-theme="dark"] .answers-empty-panel p { color:#c0cfe5; }
+[data-theme="dark"] .answers-empty-symbol { background:#32557d; color:#e2eeff; }
+[data-theme="dark"] #result-card-preview { border-color:#4e6383; box-shadow:0 20px 50px #0008; }
+[data-theme="dark"] .car-search-panel > .button { color:#e6efff; }
+@media(max-width:600px){ .theme-toggle { min-width:42px; width:42px; min-height:42px; } }
+
+
+/* 15. Одинаковое отображение фотографий и стабильная навигация опроса.
+   Тема меняет цвета карточек, но не фон фото или геометрию интерфейса.
+   Фотографии имеют тот же режим object-fit в светлой и тёмной темах. */
+:root {
+  --photo-surface: #fff;
+}
+.scenario-photo, .car-photo, .dialog-car-photo, .option-art {
+  background-color: var(--photo-surface);
+}
+[data-theme="dark"] .scenario-photo,
+[data-theme="dark"] .car-photo,
+[data-theme="dark"] .dialog-car-photo,
+[data-theme="dark"] .option-art {
+  background-color: var(--photo-surface);
+}
+
+/* Не сдвигаем «Продолжить» и «Пропустить» между всеми 15 вопросами.
+   Содержимое вопроса при нехватке высоты прокручивается отдельно. */
+body[data-screen="quiz"] { overflow: hidden; }
+body[data-screen="quiz"] .quiz-screen {
+  height: calc(100dvh - var(--header-height));
+  min-height: 0;
+  padding-block: 8px;
+}
+body[data-screen="quiz"] .quiz-panel {
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  grid-template-rows: auto auto auto minmax(0,1fr) auto;
+  height: 100%;
+  min-height: 0;
+  max-height: 100%;
+  overflow: hidden;
+}
+body[data-screen="quiz"] .question {
+  grid-row: 4;
+  min-height: 0;
+  margin: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+body[data-screen="quiz"] .question::-webkit-scrollbar { display: none; }
+body[data-screen="quiz"] .quiz-submit {
+  grid-row: 5;
+  align-self: end;
+  width: min(100%, 360px);
+  max-width: 360px;
+  margin-inline: auto;
+  flex-shrink: 0;
+}
+@media (max-width:700px) {
+  body[data-screen="quiz"] .quiz-screen { padding-block: 6px; }
+  body[data-screen="quiz"] .quiz-submit { width:100%; max-width:360px; }
+}
+/* Фиксированная высота кнопок: текст и состояние не меняют их координаты. */
+body[data-screen="quiz"] .quiz-submit .button {
+  height: 44px;
+  min-height: 44px;
+  max-height: 44px;
+  padding-block: 0;
+  line-height: 1.2;
+}
+/* Наведение не двигает основную кнопку при переходах: меняется только цвет. */
+body[data-screen="quiz"] .quiz-submit .button-primary:hover:not(:disabled) {
+  transform: none;
+}
+/* Переключатель имеет одну ширину для обоих названий темы. */
+@media (min-width:821px) {
+  .theme-toggle { width: 128px; }
+}
+/* При загрузке главное фото тоже не получает серо-синюю подложку в тёмной теме. */
+[data-theme="dark"] .hero-media { background:#ceddf1; }
+
+/* Фотографии автомобилей: одна геометрия и одинаковые цвета в обеих темах.
+   Большинство исходников имеют формат 4:3. Чтобы не показывать белые полосы
+   в широких карточках, заполняем рамку через cover, без растягивания изображения. */
+.unified-photo { position:relative; isolation:isolate; overflow:hidden; background:#e4eaf3 !important; }
+.unified-photo::before, .unified-photo::after { content:none !important; }
+.unified-photo > img {
+  position:absolute !important; inset:0; display:block; width:100%; height:100%;
+  max-width:none; object-fit:cover !important; object-position:center center;
+}
+[data-theme="dark"] .unified-photo, [data-theme="light"] .unified-photo { background:#e4eaf3 !important; }
+
+/* 16. Четыре UX-исправления (22.11.2026).
+   Одинаковая геометрия в обеих темах; изменяем только расположение элементов,
+   не затрагиваем алгоритм, ответы пользователя и пятисекундную анимацию. */
+
+/* 1. Переключатель темы закреплён в правом углу шапки на ЛЮБОМ экране.
+   На главной есть дополнительная кнопка старта, на других экранах её нет:
+   теперь исчезновение этой кнопки не двигает переключатель ни на пиксель. */
+.site-header { position: sticky; top: 0; z-index: 110; }
+.header-inner { position: relative; }
+.header-actions { padding-right: 142px; }
+.theme-toggle {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 128px;
+  min-width: 128px;
+  height: 44px;
+  margin: 0;
+}
+@media (max-width: 900px) {
+  .header-inner { grid-template-columns: 1fr auto; }
+  .home-nav, .header-cta { display: none !important; }
+  .header-actions { padding-right: 54px; }
+  .theme-toggle { width: 44px; min-width: 44px; height: 44px; padding: 8px; }
+  .theme-toggle-label { display: none; }
+}
+@media (max-width: 600px) {
+  .theme-toggle { width: 42px; min-width: 42px; height: 42px; }
+  .header-actions { padding-right: 52px; }
+}
+
+/* 2. Финишный баннер: галочка слева, за ней — клетчатый гоночный флаг.
+   Шахматная текстура голубая/синяя начинается только с середины карточки.
+   Графика живёт в нижнем слое: текст и кнопки остаются читаемыми и кликабельными. */
+.results-heading { grid-template-columns:minmax(0,1fr) auto; }
+.result-copy { grid-column:1; grid-row:1; min-width:0; padding-left:86px; z-index:1; }
+.result-decoration {
+  position:absolute; inset:0; width:100%; height:100%; z-index:0;
+  pointer-events:none; grid-column:auto; grid-row:auto;
+}
+.finish-medal {
+  position:absolute; top:50%; left:46px; width:65px; height:65px;
+  border:3px solid #a7ecff; opacity:.95;
+  box-shadow:0 0 0 6px #80bdff34,0 6px 15px #102a6950;
+  transform:translate(-50%,-50%);
+}
+/* Галочка рисуется CSS — видна даже при недоступном внешнем SVG-спрайте. */
+.finish-medal svg { display:none; }
+.finish-medal::after {
+  content:"✓"; display:block; font-family:Arial,sans-serif; font-size:35px;
+  line-height:1; font-weight:900; color:#ddf7ff;
+  text-shadow:0 1px 7px #8adeff77;
+}
+.finish-line {
+  position:absolute; inset:0 0 0 50%; width:auto; height:auto;
+  transform:none; opacity:.25;
+  background: repeating-conic-gradient(#a7dcff 0 25%,#285bb8 0 50%) 0 0 / 40px 40px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%);
+  mask-image:linear-gradient(90deg,transparent,#000 12%);
+}
+.result-actions { grid-column:2; grid-row:1; justify-self:end; z-index:2; }
+.results-heading.is-interrupted .result-copy { padding-left:0; }
+@media (max-width:760px) {
+  .results-heading { grid-template-columns:minmax(0,1fr); }
+  .result-copy { grid-column:1; grid-row:1; padding-left:47px; }
+  .results-heading.is-interrupted .result-copy { padding-left:0; }
+  .result-actions, .results-heading.is-interrupted .result-actions {
+    grid-column:1; grid-row:2; justify-self:start; margin-top:10px;
+  }
+  .result-decoration { position:absolute; inset:0; width:100%; height:100%; }
+  .finish-medal {
+    top:32px; left:22px; width:34px; height:34px;
+    border-width:2px; box-shadow:0 0 0 4px #80bdff34;
+  }
+  .finish-medal::after { font-size:21px; }
+  .finish-line {
+    inset:0 0 0 50%; opacity:.17;
+    background-size:34px 34px;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 22%);
+    mask-image:linear-gradient(90deg,transparent,#000 22%);
+  }
+  .finish-label { padding-right:0; }
+}
+
+/* 3. Пояснение ДНК стало крупнее, легче читается и не звучит как оценка водителя. */
+.dna-lead { max-width: 80ch; font-size: clamp(1.04rem, 1.4vw, 1.18rem); line-height: 1.7; }
+.dna-lead strong { color: var(--ink); font-weight: 760; }
+[data-theme="dark"] .dna-lead strong { color: #f4f8ff; }
+
+/* 4. «Почему не эта машина?» — вернуть единое выравнивание ВЛЕВО.
+   Заголовок, пояснение, подпись, ввод, подсказка и кнопка начинаются с одной оси. */
+.car-search-panel { display:flex; flex-direction:column; align-items:stretch; text-align:left; gap:13px; }
+.car-search-panel > h2 { text-align:left; }
+.car-search-panel .car-search-description {
+  max-width:70ch; margin:0; text-align:left;
+}
+.car-search-panel .car-search-box {
+  width:min(100%,680px); max-width:680px; margin:0; justify-items:stretch; text-align:left;
+}
+.car-search-panel .car-search-combobox { width:100%; }
+.car-search-panel .car-search-input.extra-input { text-align:left; }
+.car-search-panel .car-search-help { text-align:left; }
+.car-search-panel .car-search-suggestions { text-align:left; }
+.car-search-panel > .button { align-self:flex-start; min-width:min(100%,250px); }
+.car-search-panel .car-search-selected { justify-self:start; }
+@media (max-width:600px) {
+  .car-search-panel { gap:12px; }
+  .car-search-panel .car-search-description { font-size:.94rem; }
+  .car-search-panel > .button { width:100%; }
+}
+
+/* Короткое пояснение оценок; подробная методика открывается по желанию. */
+.rating-basis-details { margin-top:8px; font-size:.87rem; line-height:1.5; }
+.rating-basis-details summary { cursor:pointer; color:var(--blue); font-weight:700; }
+.rating-basis-details p { margin:.55rem 0 0; }
+[data-theme="dark"] .rating-basis-details summary { color:#a5c8ff; }

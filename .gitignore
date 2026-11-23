@@ -19,3 +19,12 @@ db.sqlite3
 # OS
 .DS_Store
 Thumbs.db
+
+# Local runtime data and generated dependencies
+*.db
+*.db-*
+*.sqlite
+.env.*
+!.env.example
+node_modules/
+dist/

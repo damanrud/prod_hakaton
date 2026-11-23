@@ -1,0 +1,1745 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "AutoChoice API",
+    "version": "3.0.0",
+    "description": "Пропущенные вопросы можно опустить, передать null или skip. Все оценки — баллы модели. При пустой анкете возвращается статус needs_answers без рекомендаций."
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {
+    "/api/cars": {
+      "get": {
+        "summary": "Все комплектации и ссылки на фотографии",
+        "responses": {
+          "200": {
+            "description": "Снимок SQLite",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "cars": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Car"
+                      }
+                    }
+                  },
+                  "required": [
+                    "cars"
+                  ]
+                },
+                "example": {
+                  "cars": [
+                    {
+                      "body_type": "wagon",
+                      "boot_l": 495,
+                      "brand": "Audi",
+                      "bright": 3.0,
+                      "car_size": "medium",
+                      "cargo": 3.6,
+                      "city": 3.5,
+                      "classic": 4.0,
+                      "clearance_mm": 180,
+                      "comfort": 4.5,
+                      "condition": "used",
+                      "cozy_interior": 4.5,
+                      "crossover_style": 2.0,
+                      "daily_use": 3.7,
+                      "data_date": "2026-11-21",
+                      "description": "Ориентировочные данные каталога.",
+                      "drive": "4wd",
+                      "driving_fun": 4.0,
+                      "dynamics": 3.5,
+                      "economy": 3.7,
+                      "elegant": 4.5,
+                      "engine_power_hp": 245,
+                      "family": 3.7,
+                      "fuel_consumption": 7.2,
+                      "fuel_type": "petrol",
+                      "futuristic": 2.0,
+                      "gravel": 3.3,
+                      "highway": 5.0,
+                      "hybrid_type": null,
+                      "id": "audi-a4-allroad",
+                      "image": "audi-a4-allroad.jpg",
+                      "image_url": "/cars/images/audi-a4-allroad.jpg",
+                      "maintenance": 3.0,
+                      "minimalist": 4.5,
+                      "model": "A4 allroad",
+                      "offroad": 2.2,
+                      "price_rub": 3330000,
+                      "quality": {
+                        "hybrid_type": "not_applicable"
+                      },
+                      "reliability": null,
+                      "safety": null,
+                      "seats": 5,
+                      "sedan_style": 1.0,
+                      "source": "https://www.drom.ru/catalog/audi/a4_allroad_quattro/268236/",
+                      "sport_style": 3.0,
+                      "tech_interior": 3.5,
+                      "transmission": "robot",
+                      "trim": "2.0 45 TFSI quattro S Tronic",
+                      "verified_at": "2026-11-21",
+                      "year": 2020
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Каталог временно недоступен.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Каталог временно недоступен."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/catalog/status": {
+      "get": {
+        "summary": "Результат последнего импорта",
+        "responses": {
+          "200": {
+            "description": "Статус каталога",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "empty",
+                        "ready",
+                        "error"
+                      ]
+                    },
+                    "errors": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "warnings": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "count",
+                    "status",
+                    "errors",
+                    "warnings"
+                  ]
+                },
+                "example": {
+                  "count": 100,
+                  "status": "ready",
+                  "errors": [],
+                  "warnings": []
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Каталог временно недоступен.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Каталог временно недоступен."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/recommend": {
+      "post": {
+        "summary": "Подобрать автомобили и объяснить результат",
+        "responses": {
+          "200": {
+            "description": "Рейтинги, основные карточки и возможные изменения",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                },
+                "example": {
+                  "balance": [],
+                  "compromises": [
+                    {
+                      "answers": {
+                        "1": "custom",
+                        "budgetMax": 250000
+                      },
+                      "count": 1,
+                      "description": "Увеличить бюджет до 250 000 ₽"
+                    }
+                  ],
+                  "count": 0,
+                  "filterDetails": [
+                    {
+                      "label": "Цена до 1 ₽",
+                      "question": 1,
+                      "rejected": 100,
+                      "unknown": 0
+                    }
+                  ],
+                  "filters": [
+                    "Цена до 1 ₽ — не подходят 100, недостаточно данных для 0."
+                  ],
+                  "heart": [],
+                  "message": "В каталоге пока нет автомобилей, которые подтверждённо выполняют все условия.",
+                  "notes": [],
+                  "picks": [],
+                  "reason": [],
+                  "status": "no_matches",
+                  "totalCatalog": 100,
+                  "dna": {
+                    "status": "preliminary",
+                    "primary": null,
+                    "description": "Ответь на большее число вопросов, чтобы получить профиль.",
+                    "traits": [
+                      {
+                        "key": "practical",
+                        "label": "Практичность",
+                        "percent": 0
+                      },
+                      {
+                        "key": "comfort",
+                        "label": "Комфорт",
+                        "percent": 0
+                      },
+                      {
+                        "key": "economy",
+                        "label": "Экономичность",
+                        "percent": 0
+                      },
+                      {
+                        "key": "dynamics",
+                        "label": "Динамика",
+                        "percent": 0
+                      },
+                      {
+                        "key": "style",
+                        "label": "Стиль",
+                        "percent": 0
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Проверьте ответы и попробуйте ещё раз.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Проверьте ответы и попробуйте ещё раз."
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Максимальный размер запроса — 16 КиБ.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Максимальный размер запроса — 16 КиБ."
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Каталог временно недоступен.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Каталог временно недоступен."
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request"
+              },
+              "example": {
+                "answers": {
+                  "1": "2to5",
+                  "5": "five",
+                  "7": [
+                    "automatic"
+                  ],
+                  "11": "a"
+                },
+                "balance": 50
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/images/{name}": {
+      "get": {
+        "summary": "Локальная фотография по имени из каталога",
+        "responses": {
+          "200": {
+            "description": "Байты изображения",
+            "content": {
+              "image/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Файл не найден",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "peugeot-traveller.jpg"
+          }
+        ]
+      }
+    },
+    "/cars/catalog.csv": {
+      "get": {
+        "summary": "Скачать исходный CSV в UTF-8",
+        "responses": {
+          "200": {
+            "description": "CSV-файл со строкой заголовков",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Файл не найден",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Проверить чтение таблицы SQLite",
+        "responses": {
+          "200": {
+            "description": "База доступна",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ]
+                },
+                "example": {
+                  "status": "ok"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Каталог временно недоступен.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Каталог временно недоступен."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/docs": {
+      "get": {
+        "summary": "Интерактивная документация Swagger UI",
+        "responses": {
+          "200": {
+            "description": "HTML-документ",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/openapi.json": {
+      "get": {
+        "summary": "Спецификация OpenAPI",
+        "responses": {
+          "200": {
+            "description": "Машиночитаемый документ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/duels": {
+      "post": {
+        "summary": "Подобрать визуальные примеры из каталога",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "answers": {
+                    "$ref": "#/components/schemas/Answers"
+                  }
+                },
+                "required": [
+                  "answers"
+                ]
+              },
+              "example": {
+                "answers": {
+                  "4": [
+                    "family"
+                  ],
+                  "8": "large"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Пары фотографий по номеру вопроса. Для отсутствующих пар используются стандартные иллюстрации.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "duels": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "properties": {
+                          "a": {
+                            "type": "string"
+                          },
+                          "b": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "a",
+                          "b"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "duels"
+                  ]
+                },
+                "example": {
+                  "duels": {
+                    "11": {
+                      "a": "/cars/images/volvo-xc90.jpg",
+                      "b": "/cars/images/kia-ev6.jpg"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Проверьте ответы и попробуйте ещё раз.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Проверьте ответы и попробуйте ещё раз."
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Максимальный размер запроса — 16 КиБ.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Максимальный размер запроса — 16 КиБ."
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Каталог временно недоступен.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Каталог временно недоступен."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/explain-car": {
+      "post": {
+        "summary": "Объяснить место выбранной машины в подборе",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExplainCarRequest"
+              },
+              "example": {
+                "car_id": "land-rover-defender",
+                "answers": {
+                  "1": "under2",
+                  "5": "five"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Совместимость, обязательные условия и место в рейтинге баланса",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExplainCarResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Проверьте ответы и попробуйте ещё раз.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Проверьте ответы и попробуйте ещё раз."
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Максимальный размер запроса — 16 КиБ.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Максимальный размер запроса — 16 КиБ."
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Каталог временно недоступен.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Каталог временно недоступен."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Модель не найдена в каталоге",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "message": "Автомобиль не найден."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/home-picks": {
+      "get": {
+        "summary": "Готовые сценарии на главной странице React",
+        "tags": [
+          "Catalog"
+        ],
+        "responses": {
+          "200": {
+            "description": "До трёх случайных разных моделей из текущего каталога"
+          }
+        }
+      }
+    },
+    "/api/metrics": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "summary": "Диагностика запросов и времени ответа",
+        "description": "Агрегированные показатели без персональных данных.",
+        "responses": {
+          "200": {
+            "description": "Метрики",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "uptime_seconds": {
+                      "type": "number"
+                    },
+                    "requests": {
+                      "type": "integer"
+                    },
+                    "server_errors": {
+                      "type": "integer"
+                    },
+                    "routes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/question-contract": {
+      "get": {
+        "summary": "Серверный контракт ответов 1–15",
+        "responses": {
+          "200": {
+            "description": "Допустимые варианты ответов и ограничения выбора"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Car": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "trim": {
+            "type": "string",
+            "nullable": true
+          },
+          "year": {
+            "type": "integer",
+            "nullable": true
+          },
+          "condition": {
+            "type": "string",
+            "nullable": true
+          },
+          "price_rub": {
+            "type": "integer",
+            "nullable": true
+          },
+          "body_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "car_size": {
+            "type": "string",
+            "nullable": true
+          },
+          "seats": {
+            "type": "integer",
+            "nullable": true
+          },
+          "transmission": {
+            "type": "string",
+            "nullable": true
+          },
+          "drive": {
+            "type": "string",
+            "nullable": true
+          },
+          "fuel_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "hybrid_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "engine_power_hp": {
+            "type": "integer",
+            "nullable": true
+          },
+          "boot_l": {
+            "type": "integer",
+            "nullable": true
+          },
+          "clearance_mm": {
+            "type": "integer",
+            "nullable": true
+          },
+          "fuel_consumption": {
+            "type": "number",
+            "nullable": true
+          },
+          "safety": {
+            "type": "number",
+            "nullable": true
+          },
+          "reliability": {
+            "type": "number",
+            "nullable": true
+          },
+          "comfort": {
+            "type": "number",
+            "nullable": true
+          },
+          "dynamics": {
+            "type": "number",
+            "nullable": true
+          },
+          "economy": {
+            "type": "number",
+            "nullable": true
+          },
+          "maintenance": {
+            "type": "number",
+            "nullable": true
+          },
+          "city": {
+            "type": "number",
+            "nullable": true
+          },
+          "highway": {
+            "type": "number",
+            "nullable": true
+          },
+          "gravel": {
+            "type": "number",
+            "nullable": true
+          },
+          "offroad": {
+            "type": "number",
+            "nullable": true
+          },
+          "family": {
+            "type": "number",
+            "nullable": true
+          },
+          "daily_use": {
+            "type": "number",
+            "nullable": true
+          },
+          "cargo": {
+            "type": "number",
+            "nullable": true
+          },
+          "driving_fun": {
+            "type": "number",
+            "nullable": true
+          },
+          "classic": {
+            "type": "number",
+            "nullable": true
+          },
+          "futuristic": {
+            "type": "number",
+            "nullable": true
+          },
+          "sport_style": {
+            "type": "number",
+            "nullable": true
+          },
+          "elegant": {
+            "type": "number",
+            "nullable": true
+          },
+          "cozy_interior": {
+            "type": "number",
+            "nullable": true
+          },
+          "tech_interior": {
+            "type": "number",
+            "nullable": true
+          },
+          "bright": {
+            "type": "number",
+            "nullable": true
+          },
+          "minimalist": {
+            "type": "number",
+            "nullable": true
+          },
+          "sedan_style": {
+            "type": "number",
+            "nullable": true
+          },
+          "crossover_style": {
+            "type": "number",
+            "nullable": true
+          },
+          "image": {
+            "type": "string",
+            "nullable": true
+          },
+          "source": {
+            "type": "string",
+            "nullable": true
+          },
+          "verified_at": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "image_url": {
+            "type": "string",
+            "nullable": true
+          },
+          "data_date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "quality": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "enum": [
+                "invalid",
+                "not_applicable"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "brand",
+          "model",
+          "trim",
+          "year",
+          "condition",
+          "price_rub",
+          "body_type",
+          "car_size",
+          "seats",
+          "transmission",
+          "drive",
+          "fuel_type",
+          "hybrid_type",
+          "engine_power_hp",
+          "boot_l",
+          "clearance_mm",
+          "fuel_consumption",
+          "safety",
+          "reliability",
+          "comfort",
+          "dynamics",
+          "economy",
+          "maintenance",
+          "city",
+          "highway",
+          "gravel",
+          "offroad",
+          "family",
+          "daily_use",
+          "cargo",
+          "driving_fun",
+          "classic",
+          "futuristic",
+          "sport_style",
+          "elegant",
+          "cozy_interior",
+          "tech_interior",
+          "bright",
+          "minimalist",
+          "sedan_style",
+          "crossover_style",
+          "image",
+          "source",
+          "verified_at",
+          "description",
+          "image_url",
+          "data_date",
+          "quality"
+        ]
+      },
+      "RankedCar": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Car"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "reason": {
+                "type": "number",
+                "nullable": true,
+                "minimum": 0,
+                "maximum": 100
+              },
+              "heart": {
+                "type": "number",
+                "nullable": true,
+                "minimum": 0,
+                "maximum": 100
+              },
+              "total": {
+                "type": "number",
+                "nullable": true,
+                "minimum": 0,
+                "maximum": 100
+              },
+              "reason_adjusted": {
+                "type": "number",
+                "nullable": true,
+                "minimum": 0,
+                "maximum": 100
+              },
+              "total_adjusted": {
+                "type": "number",
+                "nullable": true,
+                "minimum": 0,
+                "maximum": 100
+              },
+              "completeness": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "unknown": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "reasons": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "tradeoffs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "notes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "alternatives": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "brand": {
+                      "type": "string"
+                    },
+                    "model": {
+                      "type": "string"
+                    },
+                    "trim": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "brand",
+                    "model",
+                    "trim"
+                  ]
+                }
+              },
+              "heart_adjusted": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100,
+                "nullable": true
+              },
+              "heart_completeness": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "nullable": true
+              },
+              "data_coverage": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "profile_answer_count": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Количество отвеченных вопросов анкеты 1–15; дополнительные поля и пропуски не учитываются"
+              },
+              "profile_confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "Коэффициент игровой шкалы: 1 вопрос = 0.15, 2 = 0.30, ... 7 и более = 1.0. Не является вероятностью точного выбора"
+              }
+            },
+            "required": [
+              "reason",
+              "heart",
+              "total",
+              "reason_adjusted",
+              "total_adjusted",
+              "completeness",
+              "unknown",
+              "reasons",
+              "tradeoffs",
+              "notes",
+              "alternatives",
+              "heart_adjusted",
+              "heart_completeness",
+              "data_coverage"
+            ]
+          }
+        ]
+      },
+      "Answers": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "1": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "2to5",
+              "custom",
+              "over5",
+              "under2",
+              "skip",
+              null
+            ]
+          },
+          "2": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "both",
+              "new",
+              "unsure",
+              "used",
+              "skip",
+              null
+            ]
+          },
+          "3": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "city",
+                    "gravel",
+                    "highway",
+                    "offroad"
+                  ]
+                },
+                "maxItems": 4,
+                "uniqueItems": true
+              },
+              {
+                "type": "string",
+                "nullable": true,
+                "enum": [
+                  "skip",
+                  null
+                ]
+              }
+            ]
+          },
+          "4": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "cargo",
+                    "daily",
+                    "family",
+                    "fun"
+                  ]
+                },
+                "maxItems": 4,
+                "uniqueItems": true
+              },
+              {
+                "type": "string",
+                "nullable": true,
+                "enum": [
+                  "skip",
+                  null
+                ]
+              }
+            ]
+          },
+          "5": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "five",
+              "four",
+              "six",
+              "two",
+              "skip",
+              null
+            ]
+          },
+          "6": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "cases",
+              "equipment",
+              "large",
+              "light",
+              "skip",
+              null
+            ]
+          },
+          "7": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "automatic",
+                    "awd",
+                    "boot",
+                    "engine"
+                  ]
+                },
+                "maxItems": 4,
+                "uniqueItems": true
+              },
+              {
+                "type": "string",
+                "nullable": true,
+                "enum": [
+                  "skip",
+                  null
+                ]
+              }
+            ]
+          },
+          "8": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "large",
+              "medium",
+              "small",
+              "skip",
+              null
+            ]
+          },
+          "9": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "calm",
+                    "power",
+                    "practical",
+                    "sport"
+                  ]
+                },
+                "maxItems": 2,
+                "uniqueItems": true
+              },
+              {
+                "type": "string",
+                "nullable": true,
+                "enum": [
+                  "skip",
+                  null
+                ]
+              }
+            ]
+          },
+          "10": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "comfort",
+                    "dynamics",
+                    "economy",
+                    "safety"
+                  ]
+                },
+                "maxItems": 2,
+                "uniqueItems": true
+              },
+              {
+                "type": "string",
+                "nullable": true,
+                "enum": [
+                  "skip",
+                  null
+                ]
+              }
+            ]
+          },
+          "11": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "a",
+              "b",
+              "both",
+              "neither",
+              "skip",
+              null
+            ]
+          },
+          "12": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "a",
+              "b",
+              "both",
+              "neither",
+              "skip",
+              null
+            ]
+          },
+          "13": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "a",
+              "b",
+              "both",
+              "neither",
+              "skip",
+              null
+            ]
+          },
+          "14": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "a",
+              "b",
+              "both",
+              "neither",
+              "skip",
+              null
+            ]
+          },
+          "15": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "a",
+              "b",
+              "both",
+              "neither",
+              "skip",
+              null
+            ]
+          },
+          "budgetMax": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991,
+            "description": "Обязателен при 1=custom."
+          },
+          "minSeats": {
+            "type": "integer",
+            "minimum": 6,
+            "maximum": 99,
+            "default": 6,
+            "description": "Для 5=six."
+          },
+          "engine": {
+            "type": "string",
+            "enum": [
+              "diesel",
+              "electric",
+              "hybrid",
+              "petrol"
+            ],
+            "description": "Обязателен при выборе engine в вопросе 7."
+          },
+          "hybrid": {
+            "type": "string",
+            "enum": [
+              "any",
+              "regular",
+              "plug_in"
+            ],
+            "default": "any",
+            "description": "Подтип при engine=hybrid."
+          }
+        }
+      },
+      "Request": {
+        "type": "object",
+        "properties": {
+          "answers": {
+            "$ref": "#/components/schemas/Answers"
+          },
+          "balance": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 50,
+            "description": "Приоритет эмоций. 0 — практика, 50 — баланс с учётом числа дуэлей, 100 — стиль при наличии оценки."
+          }
+        },
+        "required": [
+          "answers"
+        ]
+      },
+      "Result": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RankedCar"
+            }
+          },
+          "heart": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RankedCar"
+            }
+          },
+          "balance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RankedCar"
+            }
+          },
+          "count": {
+            "type": "integer"
+          },
+          "totalCatalog": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "matches",
+              "empty",
+              "no_matches",
+              "needs_answers"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "filterDetails": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "question": {
+                  "type": "integer"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "rejected": {
+                  "type": "integer"
+                },
+                "unknown": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "question",
+                "label",
+                "rejected",
+                "unknown"
+              ]
+            }
+          },
+          "compromises": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "count": {
+                  "type": "integer"
+                },
+                "answers": {
+                  "$ref": "#/components/schemas/Answers"
+                }
+              },
+              "required": [
+                "description",
+                "count",
+                "answers"
+              ]
+            }
+          },
+          "picks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "balance",
+                    "heart",
+                    "reason"
+                  ]
+                },
+                "car": {
+                  "$ref": "#/components/schemas/RankedCar"
+                }
+              },
+              "required": [
+                "type",
+                "car"
+              ]
+            }
+          },
+          "dna": {
+            "$ref": "#/components/schemas/Dna"
+          },
+          "personalization": {
+            "type": "object",
+            "properties": {
+              "answered": {
+                "type": "integer"
+              },
+              "recommended": {
+                "type": "integer"
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "required": [
+              "answered",
+              "recommended",
+              "confidence"
+            ]
+          }
+        },
+        "required": [
+          "reason",
+          "heart",
+          "balance",
+          "count",
+          "totalCatalog",
+          "status",
+          "message",
+          "notes",
+          "filters",
+          "filterDetails",
+          "compromises",
+          "picks",
+          "dna",
+          "personalization"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "Dna": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "preliminary",
+              "ready"
+            ]
+          },
+          "traits": {
+            "type": "array",
+            "minItems": 5,
+            "maxItems": 5,
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "percent": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              },
+              "required": [
+                "key",
+                "label",
+                "percent"
+              ]
+            }
+          },
+          "primary": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "traits",
+          "primary",
+          "description"
+        ]
+      },
+      "ExplainCarRequest": {
+        "type": "object",
+        "properties": {
+          "answers": {
+            "$ref": "#/components/schemas/Answers"
+          },
+          "balance": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "default": 50,
+            "description": "Приоритет эмоций. 0 — практика, 50 — баланс с учётом числа дуэлей, 100 — стиль при наличии оценки."
+          },
+          "car_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "answers",
+          "car_id"
+        ]
+      },
+      "ExplainCarResult": {
+        "type": "object",
+        "properties": {
+          "car": {
+            "$ref": "#/components/schemas/RankedCar"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "recommended",
+              "lower_rank",
+              "excluded"
+            ]
+          },
+          "conditions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "matched",
+                    "unknown",
+                    "rejected"
+                  ]
+                }
+              },
+              "required": [
+                "label",
+                "status"
+              ]
+            }
+          },
+          "rank": {
+            "type": "integer",
+            "minimum": 1,
+            "nullable": true
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "car",
+          "status",
+          "conditions",
+          "rank",
+          "count",
+          "message"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AutoChoice · Состояние API</title>
+<style>body{font:16px/1.5 system-ui;color:#162538;background:#f3f6fa;max-width:900px;margin:auto;padding:24px}section{overflow:auto;background:white;border-radius:14px;padding:16px}table{width:100%;border-collapse:collapse}th,td{padding:8px;text-align:left;border-bottom:1px solid #dde4eb}#status{padding:12px;background:#e2f2e9}#status.warn{background:#ffe4da}</style>
+<h1>Состояние AutoChoice</h1><p id="status" role="alert">Загрузка…</p><p id="summary"></p><section><table><thead><tr><th>Маршрут</th><th>Запросы</th><th>Ошибки 5xx</th><th>Среднее время, мс</th></tr></thead><tbody></tbody></table></section>
+<script>
+
+async function refresh(){
+ const status=document.querySelector('#status');
+ try{
+  const res=await fetch('/api/metrics',{cache:'no-store',signal:AbortSignal.timeout(4000)});
+  if(!res.ok)throw Error();
+  const data=await res.json();
+  const errors=data.recent_server_error;
+  status.classList.toggle('warn',errors);
+  status.textContent=(errors?'За последние 10 минут были ошибки 5xx':'API доступен')+' · '+new Date().toLocaleTimeString();
+  document.querySelector('#summary').textContent='С момента запуска: '+data.requests+' запросов, '+data.server_errors+' ошибок.';
+  const rows=data.routes.map(item=>{
+   const tr=document.createElement('tr');
+   for(const text of [item.method+' '+item.route,item.requests,item.server_errors,item.avg_response_ms]){
+    const td=document.createElement('td');td.textContent=text;tr.append(td);
+   }
+   return tr;
+  });
+  document.querySelector('tbody').replaceChildren(...rows);
+ }catch{status.classList.add('warn');status.textContent='Нет связи с API · '+new Date().toLocaleTimeString();}
+ setTimeout(refresh,5000);
+}
+refresh();
+</script></html>
